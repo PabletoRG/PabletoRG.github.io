@@ -76,97 +76,87 @@
   </div>
 
   <!-- Modal de evidencias -->
-  <div id="modal-evidencia" class="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center hidden z-50">
-    <div class="bg-white text-black rounded-lg p-6 w-full max-w-xl space-y-4 relative">
-      <h2 class="text-xl font-bold mb-2">Carpeta de Evidencias</h2>
-      <button onclick="document.getElementById('modal-evidencia').classList.add('hidden')" class="absolute top-2 right-4 text-red-600 text-xl">✖</button>
+  <!-- MODAL ACTUALIZADO DE EVIDENCIAS -->
+<div id="modal-evidencia" class="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center hidden z-50">
+  <div class="bg-white text-black rounded-lg p-6 w-full max-w-xl space-y-4 relative">
+    <h2 class="text-xl font-bold mb-2">Carpeta de Evidencias</h2>
+    <button onclick="document.getElementById('modal-evidencia').classList.add('hidden')" class="absolute top-2 right-4 text-red-600 text-xl">✖</button>
 
-      <label>Fecha: <input id="ev-fecha" class="w-full border p-1 mt-1" readonly></label>
-      <label>Hora: <input id="ev-hora" class="w-full border p-1 mt-1" placeholder="HH:MM"></label>
-      <label>Enviado por: <input id="ev-enviado" class="w-full border p-1 mt-1"></label>
+    <label>Fecha: <input id="ev-fecha" type="text" placeholder="DD/MM/AAAA" class="w-full border p-1 mt-1"></label>
+    <label>Hora: <input id="ev-hora" class="w-full border p-1 mt-1" placeholder="HH:MM"></label>
+    <label>Enviado por: <input id="ev-enviado" class="w-full border p-1 mt-1"></label>
 
-      <div>
-        <label>Evidencias:</label>
-        <ul id="lista-evidencias" class="list-disc pl-5 text-sm"></ul>
-        <div class="flex gap-2 mt-2">
-          <input type="text" id="nueva-evidencia" class="flex-grow border p-1">
-          <button onclick="agregarEvidencia()" class="bg-blue-600 text-white px-4 py-1 rounded">Añadir</button>
-        </div>
+    <div>
+      <label>Evidencias:</label>
+      <ul id="lista-evidencias" class="list-disc pl-5 text-sm space-y-1"></ul>
+      <div class="flex gap-2 mt-2">
+        <input type="text" id="nueva-evidencia" class="flex-grow border p-1">
+        <button onclick="agregarEvidencia()" class="bg-blue-600 text-white px-4 py-1 rounded">Añadir</button>
+        <button onclick="limpiarModal()" class="bg-gray-600 text-white px-4 py-1 rounded">Limpiar</button>
       </div>
-
-      <button onclick="generarEvidencia()" class="w-full bg-green-700 hover:bg-green-800 text-white py-2 rounded">Generar Carpeta BBCode</button>
-
-      <textarea id="resultadoEvidencia" rows="10" class="w-full mt-2 p-2 bg-gray-800 text-green-400 rounded" readonly></textarea>
-      <button onclick="copiarTexto('resultadoEvidencia')" class="w-full bg-yellow-500 hover:bg-yellow-600 text-black font-bold py-2 rounded">📋 Copiar al portapapeles</button>
     </div>
+
+    <button onclick="generarEvidencia()" class="w-full bg-green-700 hover:bg-green-800 text-white py-2 rounded">Generar Carpeta BBCode</button>
+
+    <textarea id="resultadoEvidencia" rows="10" class="w-full mt-2 p-2 bg-gray-800 text-green-400 rounded" readonly></textarea>
+    <button onclick="copiarTexto('resultadoEvidencia')" class="w-full bg-yellow-500 hover:bg-yellow-600 text-black font-bold py-2 rounded">📋 Copiar al portapapeles</button>
   </div>
+</div>
 
-  <script>
-    document.getElementById("ev-fecha").value = new Date().toLocaleDateString("es-ES", { day: "2-digit", month: "2-digit", year: "numeric" });
+<script>
+function agregarEvidencia() {
+  const nombre = document.getElementById("nueva-evidencia").value;
+  if (!nombre) return;
+  const index = document.querySelectorAll("#lista-evidencias li").length + 1;
 
-    function wrapTag(openTag, closeTag) {
-      const textarea = document.getElementById("informe");
-      const start = textarea.selectionStart;
-      const end = textarea.selectionEnd;
-      const text = textarea.value;
-      const selected = text.slice(start, end);
-      textarea.value = text.slice(0, start) + openTag + selected + closeTag + text.slice(end);
-    }
+  const li = document.createElement("li");
+  li.className = "flex justify-between items-center gap-2";
+  li.dataset.nombre = nombre;
 
-    function insertLink() {
-      const url = prompt("Ingresa la URL:");
-      const text = prompt("Texto:");
-      if (url && text) {
-        const bbcode = `[url=${url}]${text}[/url]`;
-        const area = document.getElementById("informe");
-        const cursor = area.selectionStart;
-        area.value = area.value.slice(0, cursor) + bbcode + area.value.slice(cursor);
-      }
-    }
+  const span = document.createElement("span");
+  span.textContent = nombre;
 
-    function generarBBCode() {
-      const nombre = document.getElementById("nombre").value;
-      const fecha = document.getElementById("fecha").value;
-      const titulo = document.getElementById("titulo").value;
-      const informe = document.getElementById("informe").value;
-      document.getElementById("tituloGenerado").value = `[Informe] ${fecha} ${titulo}`;
-      document.getElementById("resultado").value = `[center][img(200px,200px)]https://i.imgur.com/iPc507t.png[/img][/center]
+  const btn = document.createElement("button");
+  btn.textContent = "❌";
+  btn.className = "text-red-600 font-bold";
+  btn.onclick = () => {
+    li.remove();
+    actualizarNumeracion();
+  };
 
-[b]Informe de:[/b] [i]${nombre}[/i]
+  li.appendChild(span);
+  li.appendChild(btn);
+  document.getElementById("lista-evidencias").appendChild(li);
+  document.getElementById("nueva-evidencia").value = "";
+  actualizarNumeracion();
+}
 
-[b]Fecha y hora:[/b] [i]${fecha}[/i]
+function actualizarNumeracion() {
+  const items = Array.from(document.querySelectorAll("#lista-evidencias li"));
+  items.forEach((li, i) => {
+    li.dataset.index = i + 1;
+  });
+}
 
-[b]Informe policial:[/b]
+function limpiarModal() {
+  document.getElementById("ev-fecha").value = "";
+  document.getElementById("ev-hora").value = "";
+  document.getElementById("ev-enviado").value = "";
+  document.getElementById("nueva-evidencia").value = "";
+  document.getElementById("lista-evidencias").innerHTML = "";
+  document.getElementById("resultadoEvidencia").value = "";
+}
 
-[i]${informe}[/i]`;
-    }
+function generarEvidencia() {
+  const fecha = document.getElementById("ev-fecha").value;
+  const hora = document.getElementById("ev-hora").value;
+  const quien = document.getElementById("ev-enviado").value;
+  const items = Array.from(document.querySelectorAll("#lista-evidencias li"));
 
-    function limpiarCampos() {
-      ['titulo','nombre','fecha','informe','tituloGenerado','resultado'].forEach(id => document.getElementById(id).value = "");
-    }
+  const evidencias = items.map(li => `[*] ${li.dataset.nombre}`).join("\n");
+  const spoilers = items.map((li, i) => `[spoiler="${i + 1}. ${li.dataset.nombre}"][/spoiler]`).join("\n\n");
 
-    function copiarTexto(id) {
-      const el = document.getElementById(id);
-      el.select(); el.setSelectionRange(0, 99999);
-      document.execCommand("copy");
-    }
-
-    function agregarEvidencia() {
-      const nueva = document.getElementById("nueva-evidencia").value;
-      if (!nueva) return;
-      const li = document.createElement("li");
-      li.textContent = nueva;
-      document.getElementById("lista-evidencias").appendChild(li);
-      document.getElementById("nueva-evidencia").value = "";
-    }
-
-    function generarEvidencia() {
-      const fecha = document.getElementById("ev-fecha").value;
-      const hora = document.getElementById("ev-hora").value;
-      const quien = document.getElementById("ev-enviado").value;
-      const evidencias = Array.from(document.querySelectorAll("#lista-evidencias li")).map(li => `[*] ${li.textContent}`).join("\n");
-
-      const resultado = `[quote="Oficina Forense"]
+  const resultado = `[quote="Oficina Forense"]
 [right][i][size=10]${fecha}[/size][/i][/right] 
 [right][i][size=10]Riverside, California[/size][/i][/right]
 [hr]
@@ -184,15 +174,22 @@ ${evidencias}
 
 Las cuales, luego de hacer los debidos procedimientos, han dado los siguientes resultados:
 
-[spoiler="-"][/spoiler]
-
-[spoiler="-"][/spoiler][/font]
+${spoilers}
+[/font]
 [/justify]
 [/quote]`;
 
-      document.getElementById("resultadoEvidencia").value = resultado;
-    }
-  </script>
+  document.getElementById("resultadoEvidencia").value = resultado;
+}
+
+function copiarTexto(id) {
+  const el = document.getElementById(id);
+  el.select();
+  el.setSelectionRange(0, 99999);
+  document.execCommand("copy");
+}
+</script>
+
 
 </body>
 </html>
