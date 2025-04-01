@@ -14,6 +14,13 @@
 
   <!-- Formulario -->
   <div class="space-y-4 max-w-2xl mx-auto">
+
+    <!-- Título descriptivo -->
+    <label class="block">
+      <span class="text-lg font-medium">Título descriptivo:</span>
+      <input type="text" id="titulo" placeholder="Ej: Incidente en el centro" class="w-full p-2 rounded bg-gray-800 text-white mt-1">
+    </label>
+
     <label class="block">
       <span class="text-lg font-medium">Nombre del personaje:</span>
       <input type="text" id="nombre" class="w-full p-2 rounded bg-gray-800 text-white mt-1">
@@ -44,10 +51,22 @@
     <!-- Botón para generar -->
     <button onclick="generarBBCode()" class="w-full bg-green-600 hover:bg-green-700 p-3 rounded font-bold">Generar Informe BBCode</button>
 
-    <!-- Resultado -->
+    <!-- Resultado: Título -->
+    <label class="block">
+      <span class="text-lg font-medium">Título generado:</span>
+      <div class="flex gap-2 mt-1">
+        <input id="tituloGenerado" readonly class="w-full p-2 rounded bg-gray-800 text-green-400">
+        <button onclick="copiarTexto('tituloGenerado')" class="bg-yellow-500 hover:bg-yellow-600 px-4 rounded">📋</button>
+      </div>
+    </label>
+
+    <!-- Resultado: Informe -->
     <label class="block">
       <span class="text-lg font-medium">Resultado (BBCode):</span>
-      <textarea id="resultado" rows="12" readonly class="w-full p-2 rounded bg-gray-800 text-green-400 mt-1"></textarea>
+      <div class="flex gap-2 mt-1">
+        <textarea id="resultado" rows="12" readonly class="w-full p-2 rounded bg-gray-800 text-green-400"></textarea>
+        <button onclick="copiarTexto('resultado')" class="bg-yellow-500 hover:bg-yellow-600 px-4 rounded h-12 mt-1">📋</button>
+      </div>
     </label>
   </div>
 
@@ -82,6 +101,10 @@
       const nombre = document.getElementById("nombre").value;
       const fecha = document.getElementById("fecha").value;
       const informe = document.getElementById("informe").value;
+      const titulo = document.getElementById("titulo").value;
+
+      const tituloFinal = `[Informe] ${fecha} ${titulo}`;
+      document.getElementById("tituloGenerado").value = tituloFinal;
 
       const bbcode = `[center][img(200px,200px)]https://i.imgur.com/iPc507t.png[/img][/center]
 
@@ -94,6 +117,13 @@
 [i]${informe}[/i]`;
 
       document.getElementById("resultado").value = bbcode;
+    }
+
+    function copiarTexto(idElemento) {
+      const elemento = document.getElementById(idElemento);
+      elemento.select();
+      elemento.setSelectionRange(0, 99999); // para móviles
+      document.execCommand("copy");
     }
   </script>
 
