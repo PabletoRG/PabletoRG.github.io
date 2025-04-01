@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -16,29 +17,29 @@
     <h1 class="text-2xl font-bold text-center">Informe de Sucesos</h1>
   </div>
 
+  <!-- Botón para abrir modal de evidencias -->
+  <div class="flex justify-center">
+    <button onclick="document.getElementById('modal-evidencia').classList.remove('hidden')" class="bg-purple-600 hover:bg-purple-700 p-2 px-4 rounded mb-4 font-medium">Añadir carpeta de evidencias</button>
+  </div>
+
   <!-- Formulario -->
   <div class="space-y-4 max-w-2xl mx-auto">
-
-    <!-- Título descriptivo -->
     <label class="block">
       <span class="text-lg font-medium">Título descriptivo:</span>
       <input type="text" id="titulo" placeholder="Ej: Incidente en el centro" class="w-full p-2 rounded bg-gray-800 text-white mt-1">
     </label>
-
     <label class="block">
       <span class="text-lg font-medium">Nombre del personaje:</span>
       <input type="text" id="nombre" class="w-full p-2 rounded bg-gray-800 text-white mt-1">
     </label>
-
     <label class="block">
       <span class="text-lg font-medium">Fecha y hora:</span>
       <input type="text" id="fecha" placeholder="DD/MM/AAAA, HH:MM" class="w-full p-2 rounded bg-gray-800 text-white mt-1">
     </label>
 
-    <!-- Editor de informe -->
+    <!-- Editor -->
     <label class="block">
       <span class="text-lg font-medium">Informe policial:</span>
-
       <div class="flex flex-wrap gap-2 my-2">
         <button onclick="wrapTag('[b]', '[/b]')" class="bg-blue-600 px-2 py-1 rounded">Bold</button>
         <button onclick="wrapTag('[i]', '[/i]')" class="bg-blue-600 px-2 py-1 rounded">Italic</button>
@@ -47,17 +48,15 @@
         <button onclick="wrapTag('[quote]', '[/quote]')" class="bg-blue-600 px-2 py-1 rounded">Quote</button>
         <button onclick="insertLink()" class="bg-blue-600 px-2 py-1 rounded">Link</button>
       </div>
-
       <textarea id="informe" rows="10" class="w-full p-2 rounded bg-gray-800 text-white mt-1"></textarea>
     </label>
 
-    <!-- Botones de acción -->
     <div class="flex flex-col sm:flex-row gap-4">
       <button onclick="generarBBCode()" class="w-full bg-green-600 hover:bg-green-700 p-3 rounded font-bold">Generar Informe BBCode</button>
       <button onclick="limpiarCampos()" class="w-full bg-red-600 hover:bg-red-700 p-3 rounded font-bold">Limpiar campos</button>
     </div>
 
-    <!-- Resultado: Título -->
+    <!-- Título generado -->
     <label class="block">
       <span class="text-lg font-medium">Título generado:</span>
       <div class="flex gap-2 mt-1">
@@ -66,7 +65,7 @@
       </div>
     </label>
 
-    <!-- Resultado: Informe -->
+    <!-- Informe generado -->
     <label class="block">
       <span class="text-lg font-medium">Resultado (BBCode):</span>
       <div class="flex gap-2 mt-1">
@@ -76,41 +75,62 @@
     </label>
   </div>
 
-  <!-- Funcionalidad JS -->
+  <!-- Modal de evidencias -->
+  <div id="modal-evidencia" class="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center hidden z-50">
+    <div class="bg-white text-black rounded-lg p-6 w-full max-w-xl space-y-4 relative">
+      <h2 class="text-xl font-bold mb-2">Carpeta de Evidencias</h2>
+      <button onclick="document.getElementById('modal-evidencia').classList.add('hidden')" class="absolute top-2 right-4 text-red-600 text-xl">✖</button>
+
+      <label>Fecha: <input id="ev-fecha" class="w-full border p-1 mt-1" readonly></label>
+      <label>Hora: <input id="ev-hora" class="w-full border p-1 mt-1" placeholder="HH:MM"></label>
+      <label>Enviado por: <input id="ev-enviado" class="w-full border p-1 mt-1"></label>
+
+      <div>
+        <label>Evidencias:</label>
+        <ul id="lista-evidencias" class="list-disc pl-5 text-sm"></ul>
+        <div class="flex gap-2 mt-2">
+          <input type="text" id="nueva-evidencia" class="flex-grow border p-1">
+          <button onclick="agregarEvidencia()" class="bg-blue-600 text-white px-4 py-1 rounded">Añadir</button>
+        </div>
+      </div>
+
+      <button onclick="generarEvidencia()" class="w-full bg-green-700 hover:bg-green-800 text-white py-2 rounded">Generar Carpeta BBCode</button>
+
+      <textarea id="resultadoEvidencia" rows="10" class="w-full mt-2 p-2 bg-gray-800 text-green-400 rounded" readonly></textarea>
+      <button onclick="copiarTexto('resultadoEvidencia')" class="w-full bg-yellow-500 hover:bg-yellow-600 text-black font-bold py-2 rounded">📋 Copiar al portapapeles</button>
+    </div>
+  </div>
+
   <script>
+    document.getElementById("ev-fecha").value = new Date().toLocaleDateString("es-ES", { day: "2-digit", month: "2-digit", year: "numeric" });
+
     function wrapTag(openTag, closeTag) {
       const textarea = document.getElementById("informe");
       const start = textarea.selectionStart;
       const end = textarea.selectionEnd;
       const text = textarea.value;
       const selected = text.slice(start, end);
-      const newText = text.slice(0, start) + openTag + selected + closeTag + text.slice(end);
-      textarea.value = newText;
-      textarea.focus();
-      textarea.selectionStart = start + openTag.length;
-      textarea.selectionEnd = end + openTag.length;
+      textarea.value = text.slice(0, start) + openTag + selected + closeTag + text.slice(end);
     }
 
     function insertLink() {
       const url = prompt("Ingresa la URL:");
-      const text = prompt("Texto descriptivo:");
+      const text = prompt("Texto:");
       if (url && text) {
         const bbcode = `[url=${url}]${text}[/url]`;
-        const textarea = document.getElementById("informe");
-        const cursor = textarea.selectionStart;
-        textarea.value = textarea.value.slice(0, cursor) + bbcode + textarea.value.slice(cursor);
+        const area = document.getElementById("informe");
+        const cursor = area.selectionStart;
+        area.value = area.value.slice(0, cursor) + bbcode + area.value.slice(cursor);
       }
     }
 
     function generarBBCode() {
       const nombre = document.getElementById("nombre").value;
       const fecha = document.getElementById("fecha").value;
-      const informe = document.getElementById("informe").value;
       const titulo = document.getElementById("titulo").value;
-      const tituloFinal = `[Informe] ${fecha} ${titulo}`;
-      document.getElementById("tituloGenerado").value = tituloFinal;
-
-      const bbcode = `[center][img(200px,200px)]https://i.imgur.com/iPc507t.png[/img][/center]
+      const informe = document.getElementById("informe").value;
+      document.getElementById("tituloGenerado").value = `[Informe] ${fecha} ${titulo}`;
+      document.getElementById("resultado").value = `[center][img(200px,200px)]https://i.imgur.com/iPc507t.png[/img][/center]
 
 [b]Informe de:[/b] [i]${nombre}[/i]
 
@@ -119,24 +139,58 @@
 [b]Informe policial:[/b]
 
 [i]${informe}[/i]`;
-
-      document.getElementById("resultado").value = bbcode;
-    }
-
-    function copiarTexto(idElemento) {
-      const elemento = document.getElementById(idElemento);
-      elemento.select();
-      elemento.setSelectionRange(0, 99999); // móviles
-      document.execCommand("copy");
     }
 
     function limpiarCampos() {
-      document.getElementById("nombre").value = "";
-      document.getElementById("fecha").value = "";
-      document.getElementById("titulo").value = "";
-      document.getElementById("informe").value = "";
-      document.getElementById("tituloGenerado").value = "";
-      document.getElementById("resultado").value = "";
+      ['titulo','nombre','fecha','informe','tituloGenerado','resultado'].forEach(id => document.getElementById(id).value = "");
+    }
+
+    function copiarTexto(id) {
+      const el = document.getElementById(id);
+      el.select(); el.setSelectionRange(0, 99999);
+      document.execCommand("copy");
+    }
+
+    function agregarEvidencia() {
+      const nueva = document.getElementById("nueva-evidencia").value;
+      if (!nueva) return;
+      const li = document.createElement("li");
+      li.textContent = nueva;
+      document.getElementById("lista-evidencias").appendChild(li);
+      document.getElementById("nueva-evidencia").value = "";
+    }
+
+    function generarEvidencia() {
+      const fecha = document.getElementById("ev-fecha").value;
+      const hora = document.getElementById("ev-hora").value;
+      const quien = document.getElementById("ev-enviado").value;
+      const evidencias = Array.from(document.querySelectorAll("#lista-evidencias li")).map(li => `[*] ${li.textContent}`).join("\n");
+
+      const resultado = `[quote="Oficina Forense"]
+[right][i][size=10]${fecha}[/size][/i][/right] 
+[right][i][size=10]Riverside, California[/size][/i][/right]
+[hr]
+[center][img(200px,200px)]https://i.imgur.com/77QZziy.png[/img]
+
+[b][size=16]Oficina Forense[/size][/b]
+[/center]
+
+[justify][font=Trebuchet MS]El día [b]${fecha}[/b] a las [b]${hora}[/b] se ha recibido por parte del [b]${quien}[/b] las siguientes evidencias: 
+[/font]
+[list]
+${evidencias}
+[/list]
+[font=Times New Roman]
+
+Las cuales, luego de hacer los debidos procedimientos, han dado los siguientes resultados:
+
+[spoiler="-"][/spoiler]
+
+[spoiler="-"][/spoiler][/font]
+[/justify]
+[/quote]`;
+
+      document.getElementById("resultadoEvidencia").value = resultado;
     }
   </script>
 
