@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Informe de Sucesos - SIGP</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    textarea { white-space: pre-line; }
+  </style>
+</head>
+<body class="bg-gray-900 text-white p-6 space-y-6">
+
+  <h1 class="text-2xl font-bold text-center mb-4">Informe de Sucesos</h1>
+
+  <!-- Formulario -->
+  <div class="space-y-4 max-w-2xl mx-auto">
+    <label class="block">
+      <span class="text-lg font-medium">Nombre del personaje:</span>
+      <input type="text" id="nombre" class="w-full p-2 rounded bg-gray-800 text-white mt-1">
+    </label>
+
+    <label class="block">
+      <span class="text-lg font-medium">Fecha y hora:</span>
+      <input type="text" id="fecha" placeholder="DD/MM/AAAA, HH:MM" class="w-full p-2 rounded bg-gray-800 text-white mt-1">
+    </label>
+
+    <label class="block">
+      <span class="text-lg font-medium">Informe policial:</span>
+
+      <!-- Barra de edición -->
+      <div class="flex flex-wrap gap-2 my-2">
+        <button onclick="wrapTag('[b]', '[/b]')" class="bg-blue-600 px-2 py-1 rounded">Bold</button>
+        <button onclick="wrapTag('[i]', '[/i]')" class="bg-blue-600 px-2 py-1 rounded">Italic</button>
+        <button onclick="wrapTag('[u]', '[/u]')" class="bg-blue-600 px-2 py-1 rounded">Underline</button>
+        <button onclick="wrapTag('[spoiler]', '[/spoiler]')" class="bg-blue-600 px-2 py-1 rounded">Spoiler</button>
+        <button onclick="wrapTag('[quote]', '[/quote]')" class="bg-blue-600 px-2 py-1 rounded">Quote</button>
+        <button onclick="insertLink()" class="bg-blue-600 px-2 py-1 rounded">Link</button>
+      </div>
+
+      <!-- Área del informe -->
+      <textarea id="informe" rows="10" class="w-full p-2 rounded bg-gray-800 text-white mt-1"></textarea>
+    </label>
+
+    <!-- Botón para generar -->
+    <button onclick="generarBBCode()" class="w-full bg-green-600 hover:bg-green-700 p-3 rounded font-bold">Generar Informe BBCode</button>
+
+    <!-- Resultado -->
+    <label class="block">
+      <span class="text-lg font-medium">Resultado (BBCode):</span>
+      <textarea id="resultado" rows="12" readonly class="w-full p-2 rounded bg-gray-800 text-green-400 mt-1"></textarea>
+    </label>
+  </div>
+
+  <script>
+    function wrapTag(openTag, closeTag) {
+      const textarea = document.getElementById("informe");
+      const start = textarea.selectionStart;
+      const end = textarea.selectionEnd;
+      const text = textarea.value;
+
+      const selected = text.slice(start, end);
+      const newText = text.slice(0, start) + openTag + selected + closeTag + text.slice(end);
+
+      textarea.value = newText;
+      textarea.focus();
+      textarea.selectionStart = start + openTag.length;
+      textarea.selectionEnd = end + openTag.length;
+    }
+
+    function insertLink() {
+      const url = prompt("Ingresa la URL:");
+      const text = prompt("Texto descriptivo:");
+      if (url && text) {
+        const bbcode = `[url=${url}]${text}[/url]`;
+        const textarea = document.getElementById("informe");
+        const cursor = textarea.selectionStart;
+        textarea.value = textarea.value.slice(0, cursor) + bbcode + textarea.value.slice(cursor);
+      }
+    }
+
+    function generarBBCode() {
+      const nombre = document.getElementById("nombre").value;
+      const fecha = document.getElementById("fecha").value;
+      const informe = document.getElementById("informe").value;
+
+      const bbcode = `[center][img(200px,200px)]https://i.imgur.com/iPc507t.png[/img][/center]
+
+[b]Informe de:[/b] [i]${nombre}[/i]
+
+[b]Fecha y hora:[/b] [i]${fecha}[/i]
+
+[b]Informe policial:[/b]
+
+[i]${informe}[/i]`;
+
+      document.getElementById("resultado").value = bbcode;
+    }
+  </script>
+
+</body>
+</html>
