@@ -10,7 +10,11 @@
 </head>
 <body class="bg-gray-900 text-white p-6 space-y-6">
 
-  <h1 class="text-2xl font-bold text-center mb-4">Informe de Sucesos</h1>
+  <!-- Encabezado con logo y título -->
+  <div class="flex items-center justify-center gap-4 mb-4">
+    <img src="../img/logo.png" alt="Logo SIGP" class="w-12 h-12">
+    <h1 class="text-2xl font-bold text-center">Informe de Sucesos</h1>
+  </div>
 
   <!-- Formulario -->
   <div class="space-y-4 max-w-2xl mx-auto">
@@ -31,10 +35,10 @@
       <input type="text" id="fecha" placeholder="DD/MM/AAAA, HH:MM" class="w-full p-2 rounded bg-gray-800 text-white mt-1">
     </label>
 
+    <!-- Editor de informe -->
     <label class="block">
       <span class="text-lg font-medium">Informe policial:</span>
 
-      <!-- Barra de edición -->
       <div class="flex flex-wrap gap-2 my-2">
         <button onclick="wrapTag('[b]', '[/b]')" class="bg-blue-600 px-2 py-1 rounded">Bold</button>
         <button onclick="wrapTag('[i]', '[/i]')" class="bg-blue-600 px-2 py-1 rounded">Italic</button>
@@ -44,12 +48,14 @@
         <button onclick="insertLink()" class="bg-blue-600 px-2 py-1 rounded">Link</button>
       </div>
 
-      <!-- Área del informe -->
       <textarea id="informe" rows="10" class="w-full p-2 rounded bg-gray-800 text-white mt-1"></textarea>
     </label>
 
-    <!-- Botón para generar -->
-    <button onclick="generarBBCode()" class="w-full bg-green-600 hover:bg-green-700 p-3 rounded font-bold">Generar Informe BBCode</button>
+    <!-- Botones de acción -->
+    <div class="flex flex-col sm:flex-row gap-4">
+      <button onclick="generarBBCode()" class="w-full bg-green-600 hover:bg-green-700 p-3 rounded font-bold">Generar Informe BBCode</button>
+      <button onclick="limpiarCampos()" class="w-full bg-red-600 hover:bg-red-700 p-3 rounded font-bold">Limpiar campos</button>
+    </div>
 
     <!-- Resultado: Título -->
     <label class="block">
@@ -70,16 +76,15 @@
     </label>
   </div>
 
+  <!-- Funcionalidad JS -->
   <script>
     function wrapTag(openTag, closeTag) {
       const textarea = document.getElementById("informe");
       const start = textarea.selectionStart;
       const end = textarea.selectionEnd;
       const text = textarea.value;
-
       const selected = text.slice(start, end);
       const newText = text.slice(0, start) + openTag + selected + closeTag + text.slice(end);
-
       textarea.value = newText;
       textarea.focus();
       textarea.selectionStart = start + openTag.length;
@@ -102,7 +107,6 @@
       const fecha = document.getElementById("fecha").value;
       const informe = document.getElementById("informe").value;
       const titulo = document.getElementById("titulo").value;
-
       const tituloFinal = `[Informe] ${fecha} ${titulo}`;
       document.getElementById("tituloGenerado").value = tituloFinal;
 
@@ -122,8 +126,17 @@
     function copiarTexto(idElemento) {
       const elemento = document.getElementById(idElemento);
       elemento.select();
-      elemento.setSelectionRange(0, 99999); // para móviles
+      elemento.setSelectionRange(0, 99999); // móviles
       document.execCommand("copy");
+    }
+
+    function limpiarCampos() {
+      document.getElementById("nombre").value = "";
+      document.getElementById("fecha").value = "";
+      document.getElementById("titulo").value = "";
+      document.getElementById("informe").value = "";
+      document.getElementById("tituloGenerado").value = "";
+      document.getElementById("resultado").value = "";
     }
   </script>
 
