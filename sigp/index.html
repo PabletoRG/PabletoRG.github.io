@@ -1,1 +1,27 @@
-<!DOCTYPE html><html><body>Hola SIGP</body></html>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SIGP - Menú Principal</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-900 text-white flex flex-col items-center justify-center min-h-screen p-6 space-y-6">
+
+  <!-- Logo centrado -->
+  <img src="../img/logo.png" alt="Logo Policial" class="w-32 h-32 object-contain">
+
+  <!-- Texto debajo del logo -->
+  <h1 class="text-2xl font-bold text-center">Sistema Integrado de Gestión Policial (SIGP)</h1>
+
+  <!-- Menú de botones -->
+  <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-6 w-full max-w-md text-center">
+    <a href="forms/informe.html" class="bg-blue-600 hover:bg-blue-700 py-3 px-4 rounded-xl font-medium transition">Informe de sucesos</a>
+    <a href="forms/federal.html" class="bg-blue-600 hover:bg-blue-700 py-3 px-4 rounded-xl font-medium transition">Archivo federal criminal</a>
+    <a href="forms/trafico.html" class="bg-blue-600 hover:bg-blue-700 py-3 px-4 rounded-xl font-medium transition">Archivo de tráfico</a>
+    <a href="forms/seguridad.html" class="bg-blue-600 hover:bg-blue-700 py-3 px-4 rounded-xl font-medium transition">Archivo de seguridad ciudadana</a>
+    <a href="forms/busqueda.html" class="bg-blue-600 hover:bg-blue-700 py-3 px-4 rounded-xl font-medium transition col-span-full">En busca y captura</a>
+  </div>
+
+</body>
+</html>
