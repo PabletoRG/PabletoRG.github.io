@@ -64,6 +64,8 @@
     </div>
   </main>
 
+
+
 <script>
 function agregarItem(inputId, listaId) {
   const value = document.getElementById(inputId).value;
@@ -88,13 +90,12 @@ function generarBBCode() {
   const informe = document.getElementById("informe").value;
 
   const faltas = Array.from(document.querySelectorAll("#lista-faltas li")).map(li => {
-  return "· [i]" + li.childNodes[0].textContent.trim() + "[/i]";
-}).join("
-");
+    return "· [i]" + li.childNodes[0].textContent.trim() + "[/i]";
+  }).join("\n");
+
   const sanciones = Array.from(document.querySelectorAll("#lista-sanciones li")).map(li => {
-  return "· [i]" + li.childNodes[0].textContent.trim() + "[/i]";
-}).join("
-");
+    return "· [i]" + li.childNodes[0].textContent.trim() + "[/i]";
+  }).join("\n");
 
   document.getElementById("titulo").value = `[FALTA] ${sancionado}`;
 
@@ -139,5 +140,6 @@ function copiarTexto(id) {
   document.execCommand("copy");
 }
 </script>
+
 </body>
 </html>
