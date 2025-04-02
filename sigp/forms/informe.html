@@ -189,6 +189,157 @@ function copiarTexto(id) {
   document.execCommand("copy");
 }
 </script>
+  <!-- Modal AFIS -->
+<div id="modal-afis" class="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center hidden z-50">
+  <div class="bg-white text-black rounded-lg p-6 w-full max-w-xl space-y-4 relative">
+    <h2 class="text-xl font-bold mb-2">Prueba AFIS</h2>
+    <button onclick="document.getElementById('modal-afis').classList.add('hidden')" class="absolute top-2 right-4 text-red-600 text-xl">✖</button>
+
+    <label>Número de evidencia:
+      <input type="text" id="afis-numero" class="w-full border p-1 mt-1">
+    </label>
+
+    <label>Nombre del sospechoso:
+      <input type="text" id="afis-sospechoso" class="w-full border p-1 mt-1">
+    </label>
+
+    <label>Resultado:
+      <select id="afis-resultado" class="w-full border p-1 mt-1">
+        <option value="coinciden">Coinciden</option>
+        <option value="no coinciden">No coinciden</option>
+      </select>
+    </label>
+
+    <div class="flex gap-2">
+      <button onclick="generarAFIS()" class="bg-green-700 hover:bg-green-800 text-white py-2 px-4 rounded w-full">Generar</button>
+      <button onclick="limpiarAFIS()" class="bg-gray-600 hover:bg-gray-700 text-white py-2 px-4 rounded w-full">Limpiar</button>
+    </div>
+
+    <textarea id="afis-resultado-final" rows="10" class="w-full mt-2 p-2 bg-gray-800 text-green-400 rounded" readonly></textarea>
+    <button onclick="copiarTexto('afis-resultado-final')" class="w-full bg-yellow-500 hover:bg-yellow-600 text-black font-bold py-2 rounded">📋 Copiar</button>
+  </div>
+</div>
+
+<script>
+function generarAFIS() {
+  const numero = document.getElementById("afis-numero").value;
+  const sospechoso = document.getElementById("afis-sospechoso").value;
+  const resultado = document.getElementById("afis-resultado").value;
+
+  const color = resultado === "coinciden" ? "#006600" : "#cc0000";
+
+  const bbcode = `[quote]
+[right][i][size=10]dd de mm de aaaa[/size][/i][/right]
+[right][i][size=10]Riverside, California[/size][/i][/right]
+[hr]
+[center][img(200px,200px)]https://i.imgur.com/77QZziy.png[/img]
+
+[b][size=16]Prueba AFIS[/size][/b]
+[/center]
+
+[justify][font=Trebuchet MS]Tras comparar las huellas de la evidencia [b]N° ${numero}[/b], con la base de datos de AFIS, se ha concluido lo siguiente:
+[/font]
+[list]
+[*]Las huellas [b][color=${color}]${resultado}[/color][/b] con las de [b]${sospechoso}[/b]
+[/list]
+
+
+[/justify]
+[/quote]`;
+
+  document.getElementById("afis-resultado-final").value = bbcode;
+}
+
+function limpiarAFIS() {
+  document.getElementById("afis-numero").value = "";
+  document.getElementById("afis-sospechoso").value = "";
+  document.getElementById("afis-resultado").selectedIndex = 0;
+  document.getElementById("afis-resultado-final").value = "";
+}
+
+function copiarTexto(id) {
+  const el = document.getElementById(id);
+  el.select();
+  el.setSelectionRange(0, 99999);
+  document.execCommand("copy");
+}
+</script>
+
+<!-- Modal IBIS -->
+<div id="modal-ibis" class="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center hidden z-50">
+  <div class="bg-white text-black rounded-lg p-6 w-full max-w-xl space-y-4 relative">
+    <h2 class="text-xl font-bold mb-2">Prueba IBIS</h2>
+    <button onclick="document.getElementById('modal-ibis').classList.add('hidden')" class="absolute top-2 right-4 text-red-600 text-xl">✖</button>
+
+    <label>Número de evidencia:
+      <input type="text" id="ibis-numero" class="w-full border p-1 mt-1">
+    </label>
+
+    <label>Calibre:
+      <input type="text" id="ibis-calibre" class="w-full border p-1 mt-1">
+    </label>
+
+    <label>Resultado:
+      <select id="ibis-resultado" class="w-full border p-1 mt-1">
+        <option value="coinciden">Coinciden</option>
+        <option value="no coinciden">No coinciden</option>
+      </select>
+    </label>
+
+    <div class="flex gap-2">
+      <button onclick="generarIBIS()" class="bg-green-700 hover:bg-green-800 text-white py-2 px-4 rounded w-full">Generar</button>
+      <button onclick="limpiarIBIS()" class="bg-gray-600 hover:bg-gray-700 text-white py-2 px-4 rounded w-full">Limpiar</button>
+    </div>
+
+    <textarea id="ibis-resultado-final" rows="10" class="w-full mt-2 p-2 bg-gray-800 text-green-400 rounded" readonly></textarea>
+    <button onclick="copiarTexto('ibis-resultado-final')" class="w-full bg-yellow-500 hover:bg-yellow-600 text-black font-bold py-2 rounded">📋 Copiar</button>
+  </div>
+</div>
+
+<script>
+function generarIBIS() {
+  const numero = document.getElementById("ibis-numero").value;
+  const calibre = document.getElementById("ibis-calibre").value;
+  const resultado = document.getElementById("ibis-resultado").value;
+
+  const color = resultado === "coinciden" ? "#006600" : "#cc0000";
+
+  const bbcode = `[quote]
+[right][i][size=10]dd de mm de aaaa[/size][/i][/right]
+[right][i][size=10]Riverside, California[/size][/i][/right]
+[hr]
+[center][img(200px,200px)]https://i.imgur.com/77QZziy.png[/img]
+
+[b][size=16]Prueba de Balística[/size][/b]
+[/center]
+
+[justify][font=Trebuchet MS]Tras realizar la prueba balística de la evidencia [b]N° ${numero}[/b] y almacenarlos en la base de IBIS, se ha concluido lo siguiente:
+[/font]
+[list]
+[*]Los casquillos [b][color=${color}]${resultado}[/color][/b] con un calibre [b]${calibre}[/b]
+[/list]
+
+
+[/justify]
+[/quote]`;
+
+  document.getElementById("ibis-resultado-final").value = bbcode;
+}
+
+function limpiarIBIS() {
+  document.getElementById("ibis-numero").value = "";
+  document.getElementById("ibis-calibre").value = "";
+  document.getElementById("ibis-resultado").selectedIndex = 0;
+  document.getElementById("ibis-resultado-final").value = "";
+}
+
+function copiarTexto(id) {
+  const el = document.getElementById(id);
+  el.select();
+  el.setSelectionRange(0, 99999);
+  document.execCommand("copy");
+}
+</script>
 
 
 </body>
