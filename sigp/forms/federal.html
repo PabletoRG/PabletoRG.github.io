@@ -50,25 +50,18 @@
     </div>
 
     <!-- Editor -->
-    <div>
-      <label class="block font-semibold mb-1">Opciones de formato:</label>
-      <div class="flex flex-wrap gap-2">
-        <button onclick="wrapTag('[b]', '[/b]')" class="bg-purple-600 hover:bg-purple-700 px-3 py-1 rounded text-white text-sm">Bold</button>
-        <button onclick="wrapTag('[i]', '[/i]')" class="bg-purple-600 hover:bg-purple-700 px-3 py-1 rounded text-white text-sm">Italic</button>
-        <button onclick="wrapTag('[u]', '[/u]')" class="bg-purple-600 hover:bg-purple-700 px-3 py-1 rounded text-white text-sm">Underline</button>
-        <button onclick="wrapTag('[spoiler]', '[/spoiler]')" class="bg-purple-600 hover:bg-purple-700 px-3 py-1 rounded text-white text-sm">Spoiler</button>
-        <button onclick="wrapTag('[quote]', '[/quote]')" class="bg-purple-600 hover:bg-purple-700 px-3 py-1 rounded text-white text-sm">Quote</button>
-        <button onclick="insertLink()" class="bg-purple-600 hover:bg-purple-700 px-3 py-1 rounded text-white text-sm">Link</button>
-      </div>
-    </div>
+    <!-- Editor eliminado -->
+      
 
     <!-- Resultado -->
     <div>
-      <label class="block font-semibold mb-1">Título generado:</label>
+      <div class="space-y-2"><label class="block font-semibold mb-1">Título generado:</label>
       <input id="historial-titulo" readonly class="w-full p-2 bg-gray-700 text-green-400 rounded">
     </div>
 
-    <textarea id="historial-bbcode" rows="12" class="w-full p-2 bg-gray-800 text-green-400 rounded" readonly></textarea>
+    </div>
+<div class="space-y-2"><label class="block font-semibold mb-1">Resultado (BBCode):</label>
+<textarea id="historial-bbcode" rows="12" class="w-full p-2 bg-gray-800 text-green-400 rounded" readonly></textarea>
 
     <!-- Acciones -->
     <div class="grid sm:grid-cols-3 gap-4">
@@ -149,7 +142,7 @@ function copiarTexto(id) {
   document.execCommand("copy");
 }
 
-function wrapTag(openTag, closeTag) {
+// function wrapTag eliminado
   const textarea = document.getElementById("historial-bbcode");
   const start = textarea.selectionStart;
   const end = textarea.selectionEnd;
@@ -162,7 +155,7 @@ function wrapTag(openTag, closeTag) {
   textarea.selectionEnd = end + openTag.length;
 }
 
-function insertLink() {
+// function insertLink eliminado
   const url = prompt("Ingresa la URL:");
   const text = prompt("Texto descriptivo:");
   if (url && text) {
