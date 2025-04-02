@@ -191,11 +191,14 @@ function copiarTexto(id) {
   document.execCommand("copy");
 }
 </script>
-  <!-- Modal AFIS -->
+
+<!-- Modal AFIS -->
 <div id="modal-afis" class="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center hidden z-50">
   <div class="bg-white text-black rounded-lg p-6 w-full max-w-xl space-y-4 relative">
     <h2 class="text-xl font-bold mb-2">Prueba AFIS</h2>
     <button onclick="document.getElementById('modal-afis').classList.add('hidden')" class="absolute top-2 right-4 text-red-600 text-xl">✖</button>
+
+    <label>Fecha:<input type="text" id="fecha-evidencia" placeholder="DD de MM de AAAA" class="w-full border p-1 mt-1"></label>
 
     <label>Número de evidencia:
       <input type="text" id="afis-numero" class="w-full border p-1 mt-1">
@@ -231,7 +234,7 @@ function generarAFIS() {
   const color = resultado === "coinciden" ? "#006600" : "#cc0000";
 
   const bbcode = `[quote]
-[right][i][size=10]dd de mm de aaaa[/size][/i][/right]
+[right][i][size=10]${document.getElementById('fecha-evidencia').value}[/size][/i][/right]
 [right][i][size=10]Riverside, California[/size][/i][/right]
 [hr]
 [center][img(200px,200px)]https://i.imgur.com/77QZziy.png[/img]
@@ -267,11 +270,14 @@ function copiarTexto(id) {
 }
 </script>
 
+
 <!-- Modal IBIS -->
 <div id="modal-ibis" class="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center hidden z-50">
   <div class="bg-white text-black rounded-lg p-6 w-full max-w-xl space-y-4 relative">
     <h2 class="text-xl font-bold mb-2">Prueba IBIS</h2>
     <button onclick="document.getElementById('modal-ibis').classList.add('hidden')" class="absolute top-2 right-4 text-red-600 text-xl">✖</button>
+
+    <label>Fecha:<input type="text" id="fecha-evidencia" placeholder="DD de MM de AAAA" class="w-full border p-1 mt-1"></label>
 
     <label>Número de evidencia:
       <input type="text" id="ibis-numero" class="w-full border p-1 mt-1">
@@ -342,6 +348,7 @@ function copiarTexto(id) {
   document.execCommand("copy");
 }
 </script>
+
 
 
 </body>
