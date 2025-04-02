@@ -71,7 +71,7 @@ function agregarItem(inputId, listaId) {
   if (!value) return;
   const ul = document.getElementById(listaId);
   const li = document.createElement("li");
-  li.textContent = value;
+  li.innerHTML = value + ' <button onclick="this.parentNode.remove()" class="text-red-400 hover:text-red-600 ml-2">✖</button>';
   ul.appendChild(li);
   document.getElementById(inputId).value = "";
 }
