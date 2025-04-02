@@ -1,0 +1,133 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Búsqueda y Captura</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-900 text-white min-h-screen p-6">
+  <main class="max-w-3xl mx-auto bg-gray-800 p-6 rounded-xl shadow-xl space-y-6">
+    <div class="flex items-center justify-center gap-4 mb-4">
+      <img src="../img/logo.png" alt="Logo SIGP" class="w-12 h-12">
+      <h1 class="text-2xl font-bold text-center">Orden de Búsqueda y Captura</h1>
+    </div>
+
+    <div class="grid gap-4">
+      <input id="oficial" type="text" placeholder="Agente solicitante" class="w-full p-2 rounded bg-gray-700 text-white">
+      <input id="fecha" type="text" placeholder="Fecha (DD/MM/AAAA)" class="w-full p-2 rounded bg-gray-700 text-white">
+      <input id="sospechoso" type="text" placeholder="Nombre del sospechoso" class="w-full p-2 rounded bg-gray-700 text-white">
+    </div>
+
+    <div>
+      <label class="block font-semibold mb-1">Delitos:</label>
+      <ul id="lista-delitos" class="list-disc pl-5 space-y-1 text-sm"></ul>
+      <div class="flex gap-2 mt-2">
+        <input type="text" id="nuevo-delito" class="flex-grow p-1 rounded bg-gray-700 text-white">
+        <button onclick="agregarItem('nuevo-delito', 'lista-delitos')" class="bg-blue-600 px-4 py-1 rounded text-white">Añadir</button>
+      </div>
+    </div>
+
+    <div>
+      <label class="block font-semibold mb-1">Otras notas:</label>
+      <textarea id="notas" rows="3" class="w-full p-2 bg-gray-700 text-white rounded"></textarea>
+    </div>
+
+    <div>
+      <label class="block font-semibold mb-1">Pruebas adjuntas:</label>
+      <textarea id="pruebas" rows="3" class="w-full p-2 bg-gray-700 text-white rounded"></textarea>
+    </div>
+
+    <div>
+      <label class="block font-semibold mb-1">Título generado:</label>
+      <input id="titulo" readonly class="w-full p-2 bg-gray-700 text-green-400 rounded">
+    </div>
+
+    <div>
+      <label class="block font-semibold mb-1">Resultado (BBCode):</label>
+      <textarea id="resultado" rows="14" class="w-full p-2 bg-gray-800 text-green-400 rounded" readonly></textarea>
+    </div>
+
+    <div class="grid sm:grid-cols-3 gap-4">
+      <button onclick="generarBBCode()" class="bg-green-600 hover:bg-green-700 p-2 rounded font-bold w-full">Generar</button>
+      <button onclick="limpiarCampos()" class="bg-red-600 hover:bg-red-700 p-2 rounded font-bold w-full">Limpiar</button>
+      <button onclick="copiarTexto('resultado')" class="bg-yellow-500 hover:bg-yellow-600 p-2 rounded font-bold w-full text-black">📋 Copiar</button>
+    </div>
+
+    <div class="flex justify-center">
+      <a href="../index.html" class="mt-4 bg-gray-700 hover:bg-gray-800 text-white font-medium py-2 px-6 rounded text-center">⬅️ Volver al menú principal</a>
+    </div>
+  </main>
+
+<script>
+function agregarItem(inputId, listaId) {
+  const value = document.getElementById(inputId).value;
+  if (!value) return;
+  const ul = document.getElementById(listaId);
+  const li = document.createElement("li");
+  li.textContent = value;
+  const btn = document.createElement("button");
+  btn.textContent = "✖";
+  btn.className = "text-red-400 hover:text-red-600 ml-2";
+  btn.onclick = function() { this.parentNode.remove(); };
+  li.appendChild(btn);
+  ul.appendChild(li);
+  document.getElementById(inputId).value = "";
+}
+
+function generarBBCode() {
+  const oficial = document.getElementById("oficial").value;
+  const fecha = document.getElementById("fecha").value;
+  const sospechoso = document.getElementById("sospechoso").value;
+  const notas = document.getElementById("notas").value;
+  const pruebas = document.getElementById("pruebas").value;
+
+  const delitos = Array.from(document.querySelectorAll("#lista-delitos li")).map(li => {
+    return "*[i]" + li.childNodes[0].textContent.trim() + "[/i]";
+  }).join("\n");
+
+  document.getElementById("titulo").value = `[Orden de búsqueda y captura] ${sospechoso}`;
+
+  const bbcode = `[center][b][size=24][color=darkblue]Orden de búsqueda y captura[/color][/size][/b]
+
+[img(200px,200px)]https://i.imgur.com/iPc507t.png[/img][/center]
+
+[b]Agente que solicita la orden:[/b] [i]${oficial}[/i]
+
+[b]Fecha:[/b] [i]${fecha}[/i]
+
+[b]Nombre del sospechoso:[/b] [i]${sospechoso}[/i]
+
+[b]Foto o descripción del sujeto (obligatorio):[/b]
+
+[center]${sospechoso ? "*se adjunta fotografía del carnet de " + sospechoso + "*" : "*se adjunta fotografía del sujeto*"}[/center]
+
+[b]Delitos por los que se expide la orden:[/b]
+
+${delitos}
+
+[b]Otras notas:[/b] [i]${notas}[/i]
+
+[b]Pruebas adjuntas:[/b]
+[i]${pruebas}[/i]`;
+
+  document.getElementById("resultado").value = bbcode;
+}
+
+function limpiarCampos() {
+  const campos = ["oficial", "fecha", "sospechoso", "notas", "pruebas"];
+  campos.forEach(id => document.getElementById(id).value = "");
+  document.getElementById("titulo").value = "";
+  document.getElementById("resultado").value = "";
+  document.getElementById("lista-delitos").innerHTML = "";
+}
+
+function copiarTexto(id) {
+  const el = document.getElementById(id);
+  el.select();
+  el.setSelectionRange(0, 99999);
+  document.execCommand("copy");
+}
+</script>
+</body>
+</html>
