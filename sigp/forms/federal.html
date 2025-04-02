@@ -1,0 +1,178 @@
+<!-- Modal Historial Delictivo -->
+<div id="modal-historial" class="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center hidden z-50">
+  <div class="bg-white text-black rounded-lg p-6 w-full max-w-xl space-y-4 relative">
+    <h2 class="text-xl font-bold mb-2">Historial Delictivo</h2>
+    <button onclick="document.getElementById('modal-historial').classList.add('hidden')" class="absolute top-2 right-4 text-red-600 text-xl">✖</button>
+
+    <label>Fecha:
+      <input type="text" id="historial-fecha" placeholder="DD/MM/AAAA" class="w-full border p-1 mt-1">
+    </label>
+
+    <label>Hora:
+      <input type="text" id="historial-hora" placeholder="HH:MM" class="w-full border p-1 mt-1">
+    </label>
+
+    <label>Policía responsable:
+      <input type="text" id="historial-policia" class="w-full border p-1 mt-1">
+    </label>
+
+    <label>Nombre del detenido:
+      <input type="text" id="historial-detenido" class="w-full border p-1 mt-1">
+    </label>
+
+    <div>
+      <label>Delitos:</label>
+      <ul id="lista-delitos" class="list-disc pl-5 text-sm space-y-1"></ul>
+      <div class="flex gap-2 mt-2">
+        <input type="text" id="nuevo-delito" class="flex-grow border p-1">
+        <button onclick="agregarItem('nuevo-delito', 'lista-delitos')" class="bg-blue-600 text-white px-4 py-1 rounded">Añadir</button>
+      </div>
+    </div>
+
+    <div>
+      <label>Agravantes:</label>
+      <ul id="lista-agravantes" class="list-disc pl-5 text-sm space-y-1"></ul>
+      <div class="flex gap-2 mt-2">
+        <input type="text" id="nuevo-agravante" class="flex-grow border p-1">
+        <button onclick="agregarItem('nuevo-agravante', 'lista-agravantes')" class="bg-blue-600 text-white px-4 py-1 rounded">Añadir</button>
+      </div>
+    </div>
+
+    <div>
+      <label>Sanciones / Penas:</label>
+      <ul id="lista-sanciones" class="list-disc pl-5 text-sm space-y-1"></ul>
+      <div class="flex gap-2 mt-2">
+        <input type="text" id="nueva-sancion" class="flex-grow border p-1">
+        <button onclick="agregarItem('nueva-sancion', 'lista-sanciones')" class="bg-blue-600 text-white px-4 py-1 rounded">Añadir</button>
+      </div>
+    </div>
+
+    <label>Lugar de arresto:
+      <input type="text" id="historial-lugar" class="w-full border p-1 mt-1">
+    </label>
+
+    <div class="flex gap-2">
+      <button onclick="generarHistorial()" class="bg-green-700 hover:bg-green-800 text-white py-2 px-4 rounded w-full">Generar</button>
+      <button onclick="limpiarHistorial()" class="bg-gray-600 hover:bg-gray-700 text-white py-2 px-4 rounded w-full">Limpiar</button>
+    </div>
+
+    <label>Título generado:</label>
+    <input id="historial-titulo" readonly class="w-full p-2 bg-gray-800 text-green-400 rounded">
+
+    
+<div>
+  <label class="block font-medium mt-4">Opciones de formato:</label>
+  <div class="flex flex-wrap gap-2 my-2">
+    <button onclick="wrapTag('[b]', '[/b]')" class="bg-blue-600 px-2 py-1 rounded text-white">Bold</button>
+    <button onclick="wrapTag('[i]', '[/i]')" class="bg-blue-600 px-2 py-1 rounded text-white">Italic</button>
+    <button onclick="wrapTag('[u]', '[/u]')" class="bg-blue-600 px-2 py-1 rounded text-white">Underline</button>
+    <button onclick="wrapTag('[spoiler]', '[/spoiler]')" class="bg-blue-600 px-2 py-1 rounded text-white">Spoiler</button>
+    <button onclick="wrapTag('[quote]', '[/quote]')" class="bg-blue-600 px-2 py-1 rounded text-white">Quote</button>
+    <button onclick="insertLink()" class="bg-blue-600 px-2 py-1 rounded text-white">Link</button>
+  </div>
+</div>
+
+<textarea id="historial-bbcode" rows="14" class="w-full mt-2 p-2 bg-gray-800 text-green-400 rounded" readonly></textarea>
+    <button onclick="copiarTexto('historial-bbcode')" class="w-full bg-yellow-500 hover:bg-yellow-600 text-black font-bold py-2 rounded">📋 Copiar</button>
+  
+<div class="flex justify-center mt-4">
+  <button onclick="window.location.href='../index.html'" class="bg-gray-600 hover:bg-gray-700 p-2 px-4 rounded font-medium text-white">
+    Volver al menú principal
+  </button>
+</div>
+
+</div>
+</div>
+
+<script>
+function agregarItem(inputId, listaId) {
+  const value = document.getElementById(inputId).value;
+  if (!value) return;
+  const ul = document.getElementById(listaId);
+  const li = document.createElement("li");
+  li.textContent = value;
+  ul.appendChild(li);
+  document.getElementById(inputId).value = "";
+}
+
+function generarHistorial() {
+  const fecha = document.getElementById("historial-fecha").value;
+  const hora = document.getElementById("historial-hora").value;
+  const policia = document.getElementById("historial-policia").value;
+  const detenido = document.getElementById("historial-detenido").value;
+  const lugar = document.getElementById("historial-lugar").value;
+
+  const delitos = Array.from(document.querySelectorAll("#lista-delitos li")).map(li => `· [i]${li.textContent}[/i]`).join("\n");
+  const agravantes = Array.from(document.querySelectorAll("#lista-agravantes li")).map(li => `· [i]${li.textContent}[/i]`).join("\n");
+  const sanciones = Array.from(document.querySelectorAll("#lista-sanciones li")).map(li => `· [i]${li.textContent}[/i]`).join("\n");
+
+  document.getElementById("historial-titulo").value = `[Historial] ${detenido}`;
+
+  const bbcode = `[center][size=18][b]ARRESTO[/b][/size][/center]
+
+[center][img(200px,200px)]http://i.imgur.com/iPc507t.png[/img][/center]
+
+[b]Fecha y hora:[/b]
+[i]${fecha} - ${hora}[/i]
+
+[b]Nombre y apellidos del policía responsable:[/b]
+[i]${policia}[/i]
+
+[b]Nombre y apellidos del detenido:[/b]
+[i]${detenido}[/i]
+
+[b]Delitos:[/b]
+${delitos}
+
+[b]Agravantes:[/b]
+${agravantes}
+
+[b]Penas:[/b]
+${sanciones}
+
+[b]Lugar de arresto:[/b]
+· [i]${lugar}[/i]`;
+
+  document.getElementById("historial-bbcode").value = bbcode;
+}
+
+function limpiarHistorial() {
+  const campos = ["historial-fecha", "historial-hora", "historial-policia", "historial-detenido", "historial-lugar"];
+  campos.forEach(id => document.getElementById(id).value = "");
+  ["lista-delitos", "lista-agravantes", "lista-sanciones"].forEach(id => document.getElementById(id).innerHTML = "");
+  document.getElementById("historial-bbcode").value = "";
+  document.getElementById("historial-titulo").value = "";
+}
+
+function copiarTexto(id) {
+  const el = document.getElementById(id);
+  el.select();
+  el.setSelectionRange(0, 99999);
+  document.execCommand("copy");
+}
+
+function wrapTag(openTag, closeTag) {
+  const textarea = document.getElementById("historial-bbcode");
+  const start = textarea.selectionStart;
+  const end = textarea.selectionEnd;
+  const text = textarea.value;
+  const selected = text.slice(start, end);
+  const newText = text.slice(0, start) + openTag + selected + closeTag + text.slice(end);
+  textarea.value = newText;
+  textarea.focus();
+  textarea.selectionStart = start + openTag.length;
+  textarea.selectionEnd = end + openTag.length;
+}
+
+function insertLink() {
+  const url = prompt("Ingresa la URL:");
+  const text = prompt("Texto descriptivo:");
+  if (url && text) {
+    const bbcode = `[url=${url}]${text}[/url]`;
+    const textarea = document.getElementById("historial-bbcode");
+    const cursor = textarea.selectionStart;
+    textarea.value = textarea.value.slice(0, cursor) + bbcode + textarea.value.slice(cursor);
+  }
+}
+
+</script>
