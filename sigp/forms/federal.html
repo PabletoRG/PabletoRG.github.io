@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -99,6 +100,75 @@ function generarHistorial() {
 ");
   const sanciones = Array.from(document.querySelectorAll("#lista-sanciones li")).map(li => `· [i]${li.textContent}[/i]`).join("
 ");
+
+  document.getElementById("historial-titulo").value = `[Historial] ${detenido}`;
+
+  const bbcode = `[center][size=18][b]ARRESTO[/b][/size][/center]
+
+[center][img(200px,200px)]http://i.imgur.com/iPc507t.png[/img][/center]
+
+[b]Fecha y hora:[/b]
+[i]${fecha} - ${hora}[/i]
+
+[b]Nombre y apellidos del policía responsable:[/b]
+[i]${policia}[/i]
+
+[b]Nombre y apellidos del detenido:[/b]
+[i]${detenido}[/i]
+
+[b]Delitos:[/b]
+${delitos}
+
+[b]Agravantes:[/b]
+${agravantes}
+
+[b]Penas:[/b]
+${sanciones}
+
+[b]Lugar de arresto:[/b]
+· [i]${lugar}[/i]`;
+
+  document.getElementById("historial-bbcode").value = bbcode;
+}
+
+function limpiarHistorial() {
+  const campos = ["historial-fecha", "historial-hora", "historial-policia", "historial-detenido", "historial-lugar"];
+  campos.forEach(id => document.getElementById(id).value = "");
+  ["lista-delitos", "lista-agravantes", "lista-sanciones"].forEach(id => document.getElementById(id).innerHTML = "");
+  document.getElementById("historial-bbcode").value = "";
+  document.getElementById("historial-titulo").value = "";
+}
+
+function copiarTexto(id) {
+  const el = document.getElementById(id);
+  el.select();
+  el.setSelectionRange(0, 99999);
+  document.execCommand("copy");
+}
+</script>
+
+
+<script>
+function agregarItem(inputId, listaId) {
+  const value = document.getElementById(inputId).value;
+  if (!value) return;
+  const ul = document.getElementById(listaId);
+  const li = document.createElement("li");
+  li.textContent = value;
+  ul.appendChild(li);
+  document.getElementById(inputId).value = "";
+}
+
+function generarHistorial() {
+  const fecha = document.getElementById("historial-fecha").value;
+  const hora = document.getElementById("historial-hora").value;
+  const policia = document.getElementById("historial-policia").value;
+  const detenido = document.getElementById("historial-detenido").value;
+  const lugar = document.getElementById("historial-lugar").value;
+
+  const delitos = Array.from(document.querySelectorAll("#lista-delitos li")).map(li => `· [i]${li.textContent}[/i]`).join("\n");
+  const agravantes = Array.from(document.querySelectorAll("#lista-agravantes li")).map(li => `· [i]${li.textContent}[/i]`).join("\n");
+  const sanciones = Array.from(document.querySelectorAll("#lista-sanciones li")).map(li => `· [i]${li.textContent}[/i]`).join("\n");
 
   document.getElementById("historial-titulo").value = `[Historial] ${detenido}`;
 
