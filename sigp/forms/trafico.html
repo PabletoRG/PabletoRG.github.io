@@ -1,0 +1,151 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Sanción de Tráfico</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-900 text-white min-h-screen p-6">
+  <main class="max-w-3xl mx-auto bg-gray-800 p-6 rounded-xl shadow-xl space-y-6">
+    <div class="flex items-center justify-center gap-4 mb-4">
+      <img src="../img/logo.png" alt="Logo SIGP" class="w-12 h-12">
+      <h1 class="text-3xl font-bold text-center">Sanción de Tráfico</h1>
+    </div>
+
+    <div class="grid gap-4">
+      <input id="fecha" type="text" placeholder="Fecha (DD/MM/AAAA)" class="w-full p-2 rounded bg-gray-700 text-white">
+      <input id="hora" type="text" placeholder="Hora (HH:MM)" class="w-full p-2 rounded bg-gray-700 text-white">
+      <input id="oficial" type="text" placeholder="Nombre del oficial" class="w-full p-2 rounded bg-gray-700 text-white">
+      <input id="infractor" type="text" placeholder="Nombre del infractor" class="w-full p-2 rounded bg-gray-700 text-white">
+      <input id="modelo" type="text" placeholder="Modelo del vehículo" class="w-full p-2 rounded bg-gray-700 text-white">
+      <input id="matricula" type="text" placeholder="Matrícula" class="w-full p-2 rounded bg-gray-700 text-white">
+      <input id="propietario" type="text" placeholder="Propietario" class="w-full p-2 rounded bg-gray-700 text-white">
+      <input id="colores" type="text" placeholder="Color/es" class="w-full p-2 rounded bg-gray-700 text-white">
+      <input id="modificaciones" type="text" placeholder="Modificaciones" class="w-full p-2 rounded bg-gray-700 text-white">
+    </div>
+
+    <div>
+      <label class="block font-semibold mb-1">Faltas:</label>
+      <ul id="lista-faltas" class="list-disc pl-5 space-y-1 text-sm"></ul>
+      <div class="flex gap-2 mt-2">
+        <input type="text" id="nueva-falta" class="flex-grow p-1 rounded bg-gray-700 text-white">
+        <button onclick="agregarItem('nueva-falta', 'lista-faltas')" class="bg-blue-600 px-4 py-1 rounded text-white">Añadir</button>
+      </div>
+    </div>
+
+    <div>
+      <label class="block font-semibold mb-1">Sanciones:</label>
+      <ul id="lista-sanciones" class="list-disc pl-5 space-y-1 text-sm"></ul>
+      <div class="flex gap-2 mt-2">
+        <input type="text" id="nueva-sancion" class="flex-grow p-1 rounded bg-gray-700 text-white">
+        <button onclick="agregarItem('nueva-sancion', 'lista-sanciones')" class="bg-blue-600 px-4 py-1 rounded text-white">Añadir</button>
+      </div>
+    </div>
+
+    <div>
+      <label class="block font-semibold mb-1">Informe:</label>
+      <textarea id="informe" rows="4" class="w-full p-2 bg-gray-700 text-white rounded"></textarea>
+    </div>
+
+    <div>
+      <label class="block font-semibold mb-1">Título generado:</label>
+      <input id="titulo" readonly class="w-full p-2 bg-gray-700 text-green-400 rounded">
+    </div>
+
+    <div>
+      <label class="block font-semibold mb-1">Resultado (BBCode):</label>
+      <textarea id="resultado" rows="12" class="w-full p-2 bg-gray-800 text-green-400 rounded" readonly></textarea>
+    </div>
+
+    <div class="grid sm:grid-cols-3 gap-4">
+      <button onclick="generarBBCode()" class="bg-green-600 hover:bg-green-700 p-2 rounded font-bold w-full">Generar</button>
+      <button onclick="limpiarCampos()" class="bg-red-600 hover:bg-red-700 p-2 rounded font-bold w-full">Limpiar</button>
+      <button onclick="copiarTexto('resultado')" class="bg-yellow-500 hover:bg-yellow-600 p-2 rounded font-bold w-full text-black">📋 Copiar</button>
+    </div>
+
+    <div class="flex justify-center">
+      <a href="../index.html" class="mt-4 bg-gray-700 hover:bg-gray-800 text-white font-medium py-2 px-6 rounded text-center">⬅️ Volver al menú principal</a>
+    </div>
+  </main>
+
+<script>
+function agregarItem(inputId, listaId) {
+  const value = document.getElementById(inputId).value;
+  if (!value) return;
+  const ul = document.getElementById(listaId);
+  const li = document.createElement("li");
+  li.textContent = value;
+  ul.appendChild(li);
+  document.getElementById(inputId).value = "";
+}
+
+function generarBBCode() {
+  const fecha = document.getElementById("fecha").value;
+  const hora = document.getElementById("hora").value;
+  const oficial = document.getElementById("oficial").value;
+  const infractor = document.getElementById("infractor").value;
+  const modelo = document.getElementById("modelo").value;
+  const matricula = document.getElementById("matricula").value;
+  const propietario = document.getElementById("propietario").value;
+  const colores = document.getElementById("colores").value;
+  const modificaciones = document.getElementById("modificaciones").value;
+  const informe = document.getElementById("informe").value;
+
+  const faltas = Array.from(document.querySelectorAll("#lista-faltas li")).map(li => `· [i]${li.textContent}[/i]`).join("\n");
+  const sanciones = Array.from(document.querySelectorAll("#lista-sanciones li")).map(li => `· [i]${li.textContent}[/i]`).join("\n");
+
+  document.getElementById("titulo").value = `[Infractor] ${propietario} ${modelo} ${matricula}`;
+
+  const bbcode = `[center][size=18][b]Sanción de tráfico.[/b][/size]
+
+[img(200px,200px)]http://i.imgur.com/iPc507t.png[/img][/center]
+
+[b]Fecha y hora:[/b]
+[i]${fecha} - ${hora}[/i]
+
+[b]Nombre y apellidos del policía responsable:[/b]
+[i]${oficial}[/i]
+
+[b]Nombre y apellidos del infractor:[/b]
+[i]${infractor}[/i]
+
+[b]Datos del vehículo (si hubiere):[/b]
+[list]
+[*][i]Modelo[/i]: ${modelo}
+[*][i]Matrícula[/i]: ${matricula}
+[*][i]Propietario[/i]: ${propietario}
+[*][i]Color/es[/i]: ${colores}
+[*][i]Modificaciones[/i]: ${modificaciones}
+[/list]
+
+[b]Faltas:[/b]
+${faltas}
+
+[b]Sanciones:[/b]
+${sanciones}
+
+[b]Informe:[/b]
+· [i]${informe}[/i]`;
+
+  document.getElementById("resultado").value = bbcode;
+}
+
+function limpiarCampos() {
+  const campos = ["fecha", "hora", "oficial", "infractor", "modelo", "matricula", "propietario", "colores", "modificaciones", "informe"];
+  campos.forEach(id => document.getElementById(id).value = "");
+  document.getElementById("titulo").value = "";
+  document.getElementById("resultado").value = "";
+  document.getElementById("lista-faltas").innerHTML = "";
+  document.getElementById("lista-sanciones").innerHTML = "";
+}
+
+function copiarTexto(id) {
+  const el = document.getElementById(id);
+  el.select();
+  el.setSelectionRange(0, 99999);
+  document.execCommand("copy");
+}
+</script>
+</body>
+</html>
