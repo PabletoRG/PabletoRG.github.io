@@ -17,10 +17,12 @@
     <h1 class="text-2xl font-bold text-center">Informe de Sucesos</h1>
   </div>
 
-  <!-- Botón para abrir modal de evidencias -->
-  <div class="flex justify-center">
-    <button onclick="document.getElementById('modal-evidencia').classList.remove('hidden')" class="bg-purple-600 hover:bg-purple-700 p-2 px-4 rounded mb-4 font-medium">Añadir carpeta de evidencias</button>
-  </div>
+  <!-- Bloque con botones añadidos -->
+<div class="flex justify-center gap-4 mb-4">
+  <button onclick="document.getElementById('modal-evidencia').classList.remove('hidden')" class="bg-purple-600 hover:bg-purple-700 p-2 px-4 rounded font-medium">Añadir carpeta de evidencias</button>
+  <button onclick="document.getElementById('modal-afis').classList.remove('hidden')" class="bg-blue-600 hover:bg-blue-700 p-2 px-4 rounded font-medium">Añadir evidencia AFIS</button>
+  <button onclick="document.getElementById('modal-ibis').classList.remove('hidden')" class="bg-indigo-600 hover:bg-indigo-700 p-2 px-4 rounded font-medium">Añadir evidencia IBIS</button>
+</div>
 
   <!-- Formulario -->
   <div class="space-y-4 max-w-2xl mx-auto">
