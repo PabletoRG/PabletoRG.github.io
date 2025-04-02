@@ -327,14 +327,15 @@ function generarBBCode() {
 
 </script>
 
-
 <!-- Modal IBIS -->
 <div id="modal-ibis" class="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center hidden z-50">
   <div class="bg-white text-black rounded-lg p-6 w-full max-w-xl space-y-4 relative">
     <h2 class="text-xl font-bold mb-2">Prueba IBIS</h2>
     <button onclick="document.getElementById('modal-ibis').classList.add('hidden')" class="absolute top-2 right-4 text-red-600 text-xl">✖</button>
 
-    <label>Fecha:<input type="text" id="fecha-evidencia" placeholder="DD de MM de AAAA" class="w-full border p-1 mt-1"></label>
+    <label>Fecha:
+      <input type="text" id="fecha-evidencia" placeholder="DD de MM de AAAA" class="w-full border p-1 mt-1">
+    </label>
 
     <label>Número de evidencia:
       <input type="text" id="ibis-numero" class="w-full border p-1 mt-1">
@@ -360,7 +361,6 @@ function generarBBCode() {
     <button onclick="copiarTexto('ibis-resultado-final')" class="w-full bg-yellow-500 hover:bg-yellow-600 text-black font-bold py-2 rounded">📋 Copiar</button>
   </div>
 </div>
-
 
 <script>
 function generarIBIS() {
@@ -394,10 +394,10 @@ function generarIBIS() {
 }
 
 function limpiarIBIS() {
+  document.getElementById("fecha-evidencia").value = "";
   document.getElementById("ibis-numero").value = "";
   document.getElementById("ibis-calibre").value = "";
   document.getElementById("ibis-resultado").selectedIndex = 0;
-  document.getElementById("fecha-evidencia").value = "";
   document.getElementById("ibis-resultado-final").value = "";
 }
 
