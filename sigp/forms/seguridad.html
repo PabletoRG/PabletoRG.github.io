@@ -71,7 +71,12 @@ function agregarItem(inputId, listaId) {
   if (!value) return;
   const ul = document.getElementById(listaId);
   const li = document.createElement("li");
-  li.innerHTML = value + ' <button onclick="this.parentNode.remove()" class="text-red-400 hover:text-red-600 ml-2">✖</button>';
+  li.textContent = value;
+  const btn = document.createElement("button");
+  btn.textContent = "✖";
+  btn.className = "text-red-400 hover:text-red-600 ml-2";
+  btn.onclick = function() { this.parentNode.remove(); };
+  li.appendChild(btn);
   ul.appendChild(li);
   document.getElementById(inputId).value = "";
 }
