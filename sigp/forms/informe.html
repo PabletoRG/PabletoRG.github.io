@@ -328,7 +328,6 @@ function generarBBCode() {
 </script>
 
 
-<!-- Modal IBIS -->
 <div id="modal-ibis" class="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center hidden z-50">
   <div class="bg-white text-black rounded-lg p-6 w-full max-w-xl space-y-4 relative">
     <h2 class="text-xl font-bold mb-2">Prueba IBIS</h2>
@@ -370,7 +369,7 @@ function generarIBIS() {
   const color = resultado === "coinciden" ? "#006600" : "#cc0000";
 
   const bbcode = `[quote]
-[right][i][size=10]dd de mm de aaaa[/size][/i][/right]
+[right][i][size=10]${document.getElementById('fecha-evidencia').value}[/size][/i][/right]
 [right][i][size=10]Riverside, California[/size][/i][/right]
 [hr]
 [center][img(200px,200px)]https://i.imgur.com/77QZziy.png[/img]
