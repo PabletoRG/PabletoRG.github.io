@@ -351,5 +351,41 @@ function copiarTexto(id) {
 
 
 
+
+<script>
+function wrapTag(openTag, closeTag) {
+  const textarea = document.getElementById("informe");
+  const start = textarea.selectionStart;
+  const end = textarea.selectionEnd;
+  const text = textarea.value;
+  const selected = text.slice(start, end);
+  const newText = text.slice(0, start) + openTag + selected + closeTag + text.slice(end);
+  textarea.value = newText;
+  textarea.focus();
+  textarea.selectionStart = start + openTag.length;
+  textarea.selectionEnd = end + openTag.length;
+}
+
+function insertLink() {
+  const url = prompt("Ingresa la URL:");
+  const text = prompt("Texto descriptivo:");
+  if (url && text) {
+    const bbcode = `[url=${url}]${text}[/url]`;
+    const textarea = document.getElementById("informe");
+    const cursor = textarea.selectionStart;
+    textarea.value = textarea.value.slice(0, cursor) + bbcode + textarea.value.slice(cursor);
+  }
+}
+
+function limpiarCampos() {
+  document.getElementById("titulo").value = "";
+  document.getElementById("nombre").value = "";
+  document.getElementById("fecha").value = "";
+  document.getElementById("informe").value = "";
+  document.getElementById("tituloGenerado").value = "";
+  document.getElementById("resultado").value = "";
+}
+</script>
+
 </body>
 </html>
