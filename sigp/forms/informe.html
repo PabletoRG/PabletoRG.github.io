@@ -4,7 +4,26 @@
 <head>
   <meta charset="UTF-8">
   <title>Informe de Sucesos - SIGP</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.tailwindcss.com">
+function generarBBCode() {
+  const nombre = document.getElementById("nombre").value;
+  const fecha = document.getElementById("fecha").value;
+  const titulo = document.getElementById("titulo").value;
+  const informe = document.getElementById("informe").value;
+
+  document.getElementById("tituloGenerado").value = `[Informe] ${fecha} ${titulo}`;
+  document.getElementById("resultado").value = `[center][img(200px,200px)]https://i.imgur.com/iPc507t.png[/img][/center]
+
+[b]Informe de:[/b] [i]${nombre}[/i]
+
+[b]Fecha y hora:[/b] [i]${fecha}[/i]
+
+[b]Informe policial:[/b]
+
+[i]${informe}[/i]`;
+}
+
+</script>
   <style>
     textarea { white-space: pre-line; }
   </style>
@@ -190,6 +209,25 @@ function copiarTexto(id) {
   el.setSelectionRange(0, 99999);
   document.execCommand("copy");
 }
+
+function generarBBCode() {
+  const nombre = document.getElementById("nombre").value;
+  const fecha = document.getElementById("fecha").value;
+  const titulo = document.getElementById("titulo").value;
+  const informe = document.getElementById("informe").value;
+
+  document.getElementById("tituloGenerado").value = `[Informe] ${fecha} ${titulo}`;
+  document.getElementById("resultado").value = `[center][img(200px,200px)]https://i.imgur.com/iPc507t.png[/img][/center]
+
+[b]Informe de:[/b] [i]${nombre}[/i]
+
+[b]Fecha y hora:[/b] [i]${fecha}[/i]
+
+[b]Informe policial:[/b]
+
+[i]${informe}[/i]`;
+}
+
 </script>
 
 <!-- Modal AFIS -->
@@ -268,6 +306,25 @@ function copiarTexto(id) {
   el.setSelectionRange(0, 99999);
   document.execCommand("copy");
 }
+
+function generarBBCode() {
+  const nombre = document.getElementById("nombre").value;
+  const fecha = document.getElementById("fecha").value;
+  const titulo = document.getElementById("titulo").value;
+  const informe = document.getElementById("informe").value;
+
+  document.getElementById("tituloGenerado").value = `[Informe] ${fecha} ${titulo}`;
+  document.getElementById("resultado").value = `[center][img(200px,200px)]https://i.imgur.com/iPc507t.png[/img][/center]
+
+[b]Informe de:[/b] [i]${nombre}[/i]
+
+[b]Fecha y hora:[/b] [i]${fecha}[/i]
+
+[b]Informe policial:[/b]
+
+[i]${informe}[/i]`;
+}
+
 </script>
 
 
@@ -347,6 +404,25 @@ function copiarTexto(id) {
   el.setSelectionRange(0, 99999);
   document.execCommand("copy");
 }
+
+function generarBBCode() {
+  const nombre = document.getElementById("nombre").value;
+  const fecha = document.getElementById("fecha").value;
+  const titulo = document.getElementById("titulo").value;
+  const informe = document.getElementById("informe").value;
+
+  document.getElementById("tituloGenerado").value = `[Informe] ${fecha} ${titulo}`;
+  document.getElementById("resultado").value = `[center][img(200px,200px)]https://i.imgur.com/iPc507t.png[/img][/center]
+
+[b]Informe de:[/b] [i]${nombre}[/i]
+
+[b]Fecha y hora:[/b] [i]${fecha}[/i]
+
+[b]Informe policial:[/b]
+
+[i]${informe}[/i]`;
+}
+
 </script>
 
 
@@ -385,6 +461,25 @@ function limpiarCampos() {
   document.getElementById("tituloGenerado").value = "";
   document.getElementById("resultado").value = "";
 }
+
+function generarBBCode() {
+  const nombre = document.getElementById("nombre").value;
+  const fecha = document.getElementById("fecha").value;
+  const titulo = document.getElementById("titulo").value;
+  const informe = document.getElementById("informe").value;
+
+  document.getElementById("tituloGenerado").value = `[Informe] ${fecha} ${titulo}`;
+  document.getElementById("resultado").value = `[center][img(200px,200px)]https://i.imgur.com/iPc507t.png[/img][/center]
+
+[b]Informe de:[/b] [i]${nombre}[/i]
+
+[b]Fecha y hora:[/b] [i]${fecha}[/i]
+
+[b]Informe policial:[/b]
+
+[i]${informe}[/i]`;
+}
+
 </script>
 
 </body>
