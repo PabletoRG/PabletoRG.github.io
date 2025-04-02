@@ -88,8 +88,14 @@ function generarBBCode() {
   const sancionado = document.getElementById("sancionado").value;
   const informe = document.getElementById("informe").value;
 
-  const faltas = Array.from(document.querySelectorAll("#lista-faltas li")).map(li => `· [i]${li.textContent}[/i]`).join("\n");
-  const sanciones = Array.from(document.querySelectorAll("#lista-sanciones li")).map(li => `· [i]${li.textContent}[/i]`).join("\n");
+  const faltas = Array.from(document.querySelectorAll("#lista-faltas li")).map(li => {
+  return "· [i]" + li.childNodes[0].textContent.trim() + "[/i]";
+}).join("
+");
+  const sanciones = Array.from(document.querySelectorAll("#lista-sanciones li")).map(li => {
+  return "· [i]" + li.childNodes[0].textContent.trim() + "[/i]";
+}).join("
+");
 
   document.getElementById("titulo").value = `[FALTA] ${sancionado}`;
 
