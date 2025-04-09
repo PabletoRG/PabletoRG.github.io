@@ -122,6 +122,10 @@ function generarExpediente() {
   const firma = document.getElementById("firma").value;
 
   function obtenerFaltas(id) {
+  return Array.from(document.querySelectorAll(`#lista-${id} li`))
+    .map(li => li.childNodes[0].nodeValue.trim())
+    .join("\n");
+}
     return Array.from(document.querySelectorAll(`#lista-${id} li`))
       .map(li => li.firstChild.textContent)
       .join("\n");
