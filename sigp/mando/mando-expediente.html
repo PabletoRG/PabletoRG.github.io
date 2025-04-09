@@ -113,6 +113,17 @@ function agregarFalta(tipo) {
   document.getElementById(inputId).value = "";
 }
 
+
+function obtenerFaltas(id) {
+  return Array.from(document.querySelectorAll(`#lista-${id} li`))
+    .map(li => {
+      const span = li.querySelector("span");
+      return span ? span.textContent.trim() : li.childNodes[0].textContent.trim();
+    })
+    .join("\n");
+}
+
+
 function generarExpediente() {
   const instructor = document.getElementById("instructor").value;
   const sancionado = document.getElementById("sancionado").value;
@@ -122,11 +133,7 @@ function generarExpediente() {
   const firma = document.getElementById("firma").value;
 
   function obtenerFaltas(id) {
-  return Array.from(document.querySelectorAll(`#lista-${id} li`))
-    .map(li => li.childNodes[0].textContent.trim())
-    .join("
-");
-} li`))
+    return Array.from(document.querySelectorAll(`#lista-${id} li`))
       .map(li => li.firstChild.textContent)
       .join("\n");
   }
