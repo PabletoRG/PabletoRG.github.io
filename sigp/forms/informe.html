@@ -69,6 +69,7 @@ function generarBBCode() {
         <button onclick="wrapTag('[spoiler]', '[/spoiler]')" class="bg-blue-600 px-2 py-1 rounded">Spoiler</button>
         <button onclick="wrapTag('[quote]', '[/quote]')" class="bg-blue-600 px-2 py-1 rounded">Quote</button>
         <button onclick="insertLink()" class="bg-blue-600 px-2 py-1 rounded">Link</button>
+        <button onclick="insertList()" class="bg-blue-600 px-2 py-1 rounded">Lista</button>
       </div>
       <textarea id="informe" rows="10" class="w-full p-2 rounded bg-gray-800 text-white mt-1"></textarea>
     </label>
@@ -456,6 +457,18 @@ function insertLink() {
     textarea.value = textarea.value.slice(0, cursor) + bbcode + textarea.value.slice(cursor);
   }
 }
+
+
+function insertList() {
+  const textarea = document.getElementById("informe");
+  const cursor = textarea.selectionStart;
+  const listBBCode = "[list]\n[*]\n[/list]";
+  textarea.value = textarea.value.slice(0, cursor) + listBBCode + textarea.value.slice(cursor);
+  textarea.focus();
+  textarea.selectionStart = cursor + 7; // Posicionar dentro de [*]
+  textarea.selectionEnd = cursor + 7;
+}
+
 
 function limpiarCampos() {
   document.getElementById("titulo").value = "";
