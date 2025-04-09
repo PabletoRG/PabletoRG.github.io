@@ -11,18 +11,15 @@
 </head>
 <body class="bg-gray-900 text-white p-6 space-y-6">
 
-  <!-- Encabezado -->
   <div class="flex items-center justify-center gap-4 mb-4">
     <img src="../img/logo.png" alt="Logo SIGP" class="w-12 h-12">
     <h1 class="text-2xl font-bold text-center">Expediente Disciplinario</h1>
   </div>
 
-  <!-- Botón de regreso a Mando -->
   <div class="flex justify-center mb-4">
     <button onclick="window.location.href='../sigp/mando/mando.html'" class="bg-gray-600 hover:bg-gray-700 p-2 px-4 rounded font-medium">Volver a Mando</button>
   </div>
 
-  <!-- Formulario -->
   <div class="space-y-4 max-w-2xl mx-auto">
     <label class="block">
       <span class="text-lg font-medium">Rango y nombre del instructor:</span>
@@ -39,28 +36,31 @@
       <input type="text" id="fecha" placeholder="DD/MM/AAAA" class="w-full p-2 rounded bg-gray-800 text-white mt-1">
     </label>
 
+    <!-- Faltas muy graves -->
     <label class="block">
       <span class="text-lg font-medium">Faltas muy graves:</span>
       <div class="flex gap-2 mt-1">
-        <input type="text" id="falta-muy-grave" class="flex-grow p-2 rounded bg-gray-800 text-white">
+        <input type="text" id="falta-muy-graves" class="flex-grow p-2 rounded bg-gray-800 text-white">
         <button onclick="agregarFalta('muy-graves')" class="bg-blue-600 px-4 rounded">Añadir</button>
       </div>
       <ul id="lista-muy-graves" class="list-disc pl-5 text-sm space-y-1 mt-1"></ul>
     </label>
 
+    <!-- Faltas graves -->
     <label class="block">
       <span class="text-lg font-medium">Faltas graves:</span>
       <div class="flex gap-2 mt-1">
-        <input type="text" id="falta-grave" class="flex-grow p-2 rounded bg-gray-800 text-white">
+        <input type="text" id="falta-graves" class="flex-grow p-2 rounded bg-gray-800 text-white">
         <button onclick="agregarFalta('graves')" class="bg-blue-600 px-4 rounded">Añadir</button>
       </div>
       <ul id="lista-graves" class="list-disc pl-5 text-sm space-y-1 mt-1"></ul>
     </label>
 
+    <!-- Faltas leves -->
     <label class="block">
       <span class="text-lg font-medium">Faltas leves:</span>
       <div class="flex gap-2 mt-1">
-        <input type="text" id="falta-leve" class="flex-grow p-2 rounded bg-gray-800 text-white">
+        <input type="text" id="falta-leves" class="flex-grow p-2 rounded bg-gray-800 text-white">
         <button onclick="agregarFalta('leves')" class="bg-blue-600 px-4 rounded">Añadir</button>
       </div>
       <ul id="lista-leves" class="list-disc pl-5 text-sm space-y-1 mt-1"></ul>
@@ -97,32 +97,33 @@
 
 <script>
 function agregarFalta(tipo) {
-  const inputId = "falta-" + tipo;
-  const listaId = "lista-" + tipo;
-  const valor = document.getElementById(inputId).value;
-  if (!valor) return;
+  const input = document.getElementById("falta-" + tipo);
+  const lista = document.getElementById("lista-" + tipo);
+  const texto = input.value.trim();
+  if (!texto) return;
+
   const li = document.createElement("li");
-  li.textContent = valor;
   li.className = "flex justify-between items-center gap-2";
+
+  const span = document.createElement("span");
+  span.textContent = texto;
+
   const btn = document.createElement("button");
   btn.textContent = "❌";
   btn.className = "text-red-600 font-bold";
   btn.onclick = () => li.remove();
-  li.appendChild(btn);
-  document.getElementById(listaId).appendChild(li);
-  document.getElementById(inputId).value = "";
-}
 
+  li.appendChild(span);
+  li.appendChild(btn);
+  lista.appendChild(li);
+  input.value = "";
+}
 
 function obtenerFaltas(id) {
-  return Array.from(document.querySelectorAll(`#lista-${id} li`))
-    .map(li => {
-      const span = li.querySelector("span");
-      return span ? span.textContent.trim() : li.childNodes[0].textContent.trim();
-    })
+  return Array.from(document.querySelectorAll(`#lista-${id} li span`))
+    .map(span => span.textContent.trim())
     .join("\n");
 }
-
 
 function generarExpediente() {
   const instructor = document.getElementById("instructor").value;
@@ -131,12 +132,6 @@ function generarExpediente() {
   const contexto = document.getElementById("contexto").value;
   const sancion = document.getElementById("sancion").value;
   const firma = document.getElementById("firma").value;
-
-  function obtenerFaltas(id) {
-    return Array.from(document.querySelectorAll(`#lista-${id} li`))
-      .map(li => li.firstChild.textContent)
-      .join("\n");
-  }
 
   const bbcode = `[quote]
 [center][img(200px,200px)]https://i.imgur.com/VX1gCFR.png[/img][/center]
