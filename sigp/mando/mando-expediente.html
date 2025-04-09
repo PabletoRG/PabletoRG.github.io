@@ -1,1 +1,185 @@
-aca
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Expediente Disciplinario - Mando</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    textarea { white-space: pre-line; }
+  </style>
+</head>
+<body class="bg-gray-900 text-white p-6 space-y-6">
+
+  <!-- Encabezado -->
+  <div class="flex items-center justify-center gap-4 mb-4">
+    <img src="../img/logo.png" alt="Logo SIGP" class="w-12 h-12">
+    <h1 class="text-2xl font-bold text-center">Expediente Disciplinario</h1>
+  </div>
+
+  <!-- Botón de regreso a Mando -->
+  <div class="flex justify-center mb-4">
+    <button onclick="window.location.href='../sigp/mando/mando.html'" class="bg-gray-600 hover:bg-gray-700 p-2 px-4 rounded font-medium">Volver a Mando</button>
+  </div>
+
+  <!-- Formulario -->
+  <div class="space-y-4 max-w-2xl mx-auto">
+    <label class="block">
+      <span class="text-lg font-medium">Rango y nombre del instructor:</span>
+      <input type="text" id="instructor" class="w-full p-2 rounded bg-gray-800 text-white mt-1">
+    </label>
+
+    <label class="block">
+      <span class="text-lg font-medium">Rango y nombre del sancionado:</span>
+      <input type="text" id="sancionado" class="w-full p-2 rounded bg-gray-800 text-white mt-1">
+    </label>
+
+    <label class="block">
+      <span class="text-lg font-medium">Fecha:</span>
+      <input type="text" id="fecha" placeholder="DD/MM/AAAA" class="w-full p-2 rounded bg-gray-800 text-white mt-1">
+    </label>
+
+    <label class="block">
+      <span class="text-lg font-medium">Faltas muy graves:</span>
+      <div class="flex gap-2 mt-1">
+        <input type="text" id="falta-muy-grave" class="flex-grow p-2 rounded bg-gray-800 text-white">
+        <button onclick="agregarFalta('muy-graves')" class="bg-blue-600 px-4 rounded">Añadir</button>
+      </div>
+      <ul id="lista-muy-graves" class="list-disc pl-5 text-sm space-y-1 mt-1"></ul>
+    </label>
+
+    <label class="block">
+      <span class="text-lg font-medium">Faltas graves:</span>
+      <div class="flex gap-2 mt-1">
+        <input type="text" id="falta-grave" class="flex-grow p-2 rounded bg-gray-800 text-white">
+        <button onclick="agregarFalta('graves')" class="bg-blue-600 px-4 rounded">Añadir</button>
+      </div>
+      <ul id="lista-graves" class="list-disc pl-5 text-sm space-y-1 mt-1"></ul>
+    </label>
+
+    <label class="block">
+      <span class="text-lg font-medium">Faltas leves:</span>
+      <div class="flex gap-2 mt-1">
+        <input type="text" id="falta-leve" class="flex-grow p-2 rounded bg-gray-800 text-white">
+        <button onclick="agregarFalta('leves')" class="bg-blue-600 px-4 rounded">Añadir</button>
+      </div>
+      <ul id="lista-leves" class="list-disc pl-5 text-sm space-y-1 mt-1"></ul>
+    </label>
+
+    <label class="block">
+      <span class="text-lg font-medium">Información adicional:</span>
+      <textarea id="contexto" rows="5" class="w-full p-2 rounded bg-gray-800 text-white mt-1"></textarea>
+    </label>
+
+    <label class="block">
+      <span class="text-lg font-medium">Propuesta de sanción:</span>
+      <textarea id="sancion" rows="3" class="w-full p-2 rounded bg-gray-800 text-white mt-1"></textarea>
+    </label>
+
+    <label class="block">
+      <span class="text-lg font-medium">Firma del instructor:</span>
+      <input type="text" id="firma" class="w-full p-2 rounded bg-gray-800 text-white mt-1">
+    </label>
+
+    <div class="flex flex-col sm:flex-row gap-4 mt-4">
+      <button onclick="generarExpediente()" class="w-full bg-green-600 hover:bg-green-700 p-3 rounded font-bold">Generar Expediente BBCode</button>
+      <button onclick="limpiarFormulario()" class="w-full bg-red-600 hover:bg-red-700 p-3 rounded font-bold">Limpiar</button>
+    </div>
+
+    <label class="block">
+      <span class="text-lg font-medium">Resultado (BBCode):</span>
+      <div class="flex gap-2 mt-1">
+        <textarea id="resultado" rows="20" readonly class="w-full p-2 rounded bg-gray-800 text-green-400"></textarea>
+        <button onclick="copiarTexto('resultado')" class="bg-yellow-500 hover:bg-yellow-600 px-4 rounded h-12 mt-1">📋</button>
+      </div>
+    </label>
+  </div>
+
+<script>
+function agregarFalta(tipo) {
+  const inputId = "falta-" + tipo;
+  const listaId = "lista-" + tipo;
+  const valor = document.getElementById(inputId).value;
+  if (!valor) return;
+  const li = document.createElement("li");
+  li.textContent = valor;
+  li.className = "flex justify-between items-center gap-2";
+  const btn = document.createElement("button");
+  btn.textContent = "❌";
+  btn.className = "text-red-600 font-bold";
+  btn.onclick = () => li.remove();
+  li.appendChild(btn);
+  document.getElementById(listaId).appendChild(li);
+  document.getElementById(inputId).value = "";
+}
+
+function generarExpediente() {
+  const instructor = document.getElementById("instructor").value;
+  const sancionado = document.getElementById("sancionado").value;
+  const fecha = document.getElementById("fecha").value;
+  const contexto = document.getElementById("contexto").value;
+  const sancion = document.getElementById("sancion").value;
+  const firma = document.getElementById("firma").value;
+
+  function obtenerFaltas(id) {
+    return Array.from(document.querySelectorAll(`#lista-${id} li`))
+      .map(li => li.firstChild.textContent)
+      .join("\n");
+  }
+
+  const bbcode = `[quote]
+[center][img(200px,200px)]https://i.imgur.com/VX1gCFR.png[/img][/center]
+
+[center][b][size=16]EXPEDIENTE DISCIPLINARIO[/size][/b][/center]
+[font=Courier New]
+
+
+[b]Instructor:[/b] ${instructor}
+
+[b]Agente:[/b] ${sancionado}
+
+[b]Fecha:[/b] ${fecha}
+
+[b]Falta disciplinaria:[/b][/font]
+
+[b][u]Ley 29/2016 de los Cuerpos de Seguridad Públicos del Condado de Riverside,[/u][/b]
+[b]Artículo 31[/b] Son faltas muy graves:${obtenerFaltas('muy-graves')}
+[b]Artículo 32[/b] Son faltas graves: ${obtenerFaltas('graves')}
+[b]Artículo 33[/b] Son faltas leves: ${obtenerFaltas('leves')}
+
+
+[font=Courier New][b]Información adicional:[/b]
+
+${contexto}
+
+[b]Propuesta de sanción:[/b]
+
+${sancion}
+[/font]
+[hr]
+[font=Courier New]
+[b]FIRMADO[/b][/font]
+
+${firma}
+FIRMA AGENTE
+
+[/quote]`;
+
+  document.getElementById("resultado").value = bbcode;
+}
+
+function limpiarFormulario() {
+  document.querySelectorAll("input, textarea").forEach(el => el.value = "");
+  document.querySelectorAll("ul").forEach(ul => ul.innerHTML = "");
+}
+
+function copiarTexto(id) {
+  const el = document.getElementById(id);
+  el.select();
+  el.setSelectionRange(0, 99999);
+  document.execCommand("copy");
+}
+</script>
+
+</body>
+</html>
