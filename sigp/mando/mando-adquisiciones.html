@@ -1,0 +1,107 @@
+
+  <div class="flex flex-col sm:flex-row gap-4 mt-4">
+    <button onclick="generarBBCode()" class="w-full bg-green-600 hover:bg-green-700 p-3 rounded font-bold">Generar BBCode</button>
+    <button onclick="limpiarFormulario()" class="w-full bg-red-600 hover:bg-red-700 p-3 rounded font-bold">Limpiar</button>
+  </div>
+
+  <label class="block">
+    <span class="text-lg font-medium">Título generado:</span>
+    <div class="flex gap-2 mt-1">
+      <input id="tituloGenerado" readonly class="w-full p-2 rounded bg-gray-800 text-green-400">
+      <button onclick="copiarTexto('tituloGenerado')" class="bg-yellow-500 hover:bg-yellow-600 px-4 rounded">📋</button>
+    </div>
+  </label>
+
+  <label class="block">
+    <span class="text-lg font-medium">Resultado (BBCode):</span>
+    <div class="flex gap-2 mt-1">
+      <textarea id="resultado" rows="20" readonly class="w-full p-2 rounded bg-gray-800 text-green-400"></textarea>
+      <button onclick="copiarTexto('resultado')" class="bg-yellow-500 hover:bg-yellow-600 px-4 rounded h-12 mt-1">📋</button>
+    </div>
+  </label>
+</div>
+
+<script>
+let totalGlobal = 0;
+
+function agregarItem() {
+  const item = document.getElementById("item").value.trim();
+  const precio = parseFloat(document.getElementById("precio").value);
+  const cantidad = parseInt(document.getElementById("cantidad").value);
+
+  if (!item || isNaN(precio) || isNaN(cantidad)) return;
+
+  const costo = precio * cantidad;
+  totalGlobal += costo;
+
+  const li = document.createElement("li");
+  li.dataset.costo = costo;
+  li.innerHTML = `<span>${item} - $${precio} x ${cantidad} = $${costo.toFixed(2)}</span>
+    <button class='text-red-600 font-bold ml-2' onclick='this.parentElement.remove(); recalcularTotal()'>❌</button>`;
+  document.getElementById("lista-items").appendChild(li);
+
+  document.getElementById("item").value = "";
+  document.getElementById("precio").value = "";
+  document.getElementById("cantidad").value = "";
+}
+
+function recalcularTotal() {
+  const items = document.querySelectorAll("#lista-items li");
+  totalGlobal = Array.from(items).reduce((acc, li) => acc + parseFloat(li.dataset.costo || 0), 0);
+}
+
+function generarBBCode() {
+  const fecha = document.getElementById("fecha").value;
+  const emisor = document.getElementById("emisor").value;
+  const items = Array.from(document.querySelectorAll("#lista-items li span")).map(span => `[*] ${span.textContent}`).join("\n");
+  recalcularTotal();
+
+  const titulo = `[Adquisición Institucional] ${emisor}`;
+  document.getElementById("tituloGenerado").value = titulo;
+
+  const bbcode = `[quote]
+[right][size=10]${fecha} 
+Despacho del Alto Mando Institucional  
+Comisaría de Riverside, California[/size][/right]
+
+[center][img]https://i.imgur.com/VX1gCFR.png[/img][/center]
+
+[b]Presidente Allen Lawless,[/b]
+
+Por la presente, se deja constancia de la asignación y utilización de recursos del presupuesto institucional para la adquisición de armamento, con el fin de fortalecer la seguridad y operatividad de esta institución.
+
+En cumplimiento de los procedimientos administrativos y financieros correspondientes, se ha efectuado la compra del siguiente material:
+
+[list=1]
+${items}
+[/list]
+
+[b]Monto total de la adquisición:[/b] $${totalGlobal.toFixed(2)}
+
+Esta compra se ha realizado siguiendo los procedimientos legales y administrativos vigentes, garantizando la transparencia y correcta utilización de los fondos institucionales.
+
+Sin otro particular, se firma la presente para los efectos que haya lugar.
+
+[right]Atentamente,[/right]
+
+[right][s]${emisor}[/s][/right]
+[/quote]`;
+
+  document.getElementById("resultado").value = bbcode;
+}
+
+function limpiarFormulario() {
+  document.querySelectorAll("input, textarea").forEach(el => el.value = "");
+  document.getElementById("lista-items").innerHTML = "";
+  totalGlobal = 0;
+}
+
+function copiarTexto(id) {
+  const el = document.getElementById(id);
+  el.select();
+  document.execCommand("copy");
+}
+</script>
+
+</body>
+</html>
