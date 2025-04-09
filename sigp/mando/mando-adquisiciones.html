@@ -1,4 +1,51 @@
 
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Adquisición Institucional - Mando</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    textarea { white-space: pre-line; }
+    input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+  </style>
+</head>
+<body class="bg-gray-900 text-white p-6 space-y-6">
+
+<div class="flex items-center justify-center gap-4 mb-4">
+  <img src="../img/logo.png" alt="Logo SIGP" class="w-12 h-12">
+  <h1 class="text-2xl font-bold text-center">Adquisición Institucional</h1>
+</div>
+
+<div class="flex justify-center mb-4">
+  <button onclick="window.location.href='../sigp/mando/mando.html'" class="bg-gray-600 hover:bg-gray-700 p-2 px-4 rounded font-medium">Volver a Mando</button>
+</div>
+
+<div class="space-y-4 max-w-3xl mx-auto">
+  <label class="block">
+    <span class="text-lg font-medium">Fecha (DD/MM/AAAA):</span>
+    <input type="text" id="fecha" class="w-full p-2 rounded bg-gray-800 text-white mt-1">
+  </label>
+
+  <label class="block">
+    <span class="text-lg font-medium">Nombre del emisor:</span>
+    <input type="text" id="emisor" class="w-full p-2 rounded bg-gray-800 text-white mt-1">
+  </label>
+
+  <div>
+    <span class="text-lg font-medium">Agregar ítem:</span>
+    <div class="grid grid-cols-4 gap-2 mt-1">
+      <input type="text" id="item" placeholder="Implemento" class="p-2 rounded bg-gray-800 text-white">
+      <input type="number" id="precio" placeholder="Precio unitario (sin $)" class="p-2 rounded bg-gray-800 text-white">
+      <input type="number" id="cantidad" placeholder="Cantidad" class="p-2 rounded bg-gray-800 text-white">
+      <button onclick="agregarItem()" class="bg-blue-600 hover:bg-blue-700 text-white rounded px-4 py-2">Añadir</button>
+    </div>
+    <ul id="lista-items" class="text-sm space-y-1 mt-3 list-disc pl-5"></ul>
+  </div>
+
   <div class="flex flex-col sm:flex-row gap-4 mt-4">
     <button onclick="generarBBCode()" class="w-full bg-green-600 hover:bg-green-700 p-3 rounded font-bold">Generar BBCode</button>
     <button onclick="limpiarFormulario()" class="w-full bg-red-600 hover:bg-red-700 p-3 rounded font-bold">Limpiar</button>
