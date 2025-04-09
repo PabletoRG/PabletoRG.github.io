@@ -86,6 +86,16 @@
       <button onclick="limpiarFormulario()" class="w-full bg-red-600 hover:bg-red-700 p-3 rounded font-bold">Limpiar</button>
     </div>
 
+    
+<label class="block">
+  <span class="text-lg font-medium">Título generado:</span>
+  <div class="flex gap-2 mt-1">
+    <input id="tituloGenerado" readonly class="w-full p-2 rounded bg-gray-800 text-green-400">
+    <button onclick="copiarTexto('tituloGenerado')" class="bg-yellow-500 hover:bg-yellow-600 px-4 rounded">📋</button>
+  </div>
+</label>
+
+
     <label class="block">
       <span class="text-lg font-medium">Resultado (BBCode):</span>
       <div class="flex gap-2 mt-1">
@@ -172,6 +182,10 @@ FIRMA AGENTE
 [/quote]`;
 
   document.getElementById("resultado").value = bbcode;
+  
+  const titulo = `[Expediente disciplinario] ${sancionado}`;
+  document.getElementById("tituloGenerado").value = titulo;
+
 }
 
 function limpiarFormulario() {
