@@ -95,7 +95,7 @@ function generarBBCode() {
   const faltas = Array.from(document.querySelectorAll("#lista-faltas li")).map(li => `· [i]${li.textContent}[/i]`).join("\n");
   const sanciones = Array.from(document.querySelectorAll("#lista-sanciones li")).map(li => `· [i]${li.textContent}[/i]`).join("\n");
 
-  document.getElementById("titulo").value = `[Infractor] ${propietario} ${modelo} ${matricula}`;
+  document.getElementById("titulo").value = `${propietario} [${infractor}] [${modelo}] [${matricula}]`;
 
   const bbcode = `[center][size=18][b]Sanción de tráfico.[/b][/size]
 
