@@ -3,129 +3,102 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Imputación Formal de Cargos</title>
+  <title>Imputación Formal con Fragmentos BBCode</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     textarea { white-space: pre-line; }
-    .modal-bg { background-color: rgba(0, 0, 0, 0.7); }
+    .modal-bg { background-color: rgba(0, 0, 0, 0.6); }
   </style>
 </head>
 <body class="bg-gray-900 text-white p-6 space-y-6">
 
-  <div class="flex items-center justify-center gap-4 mb-4">
-    <img src="https://i.imgur.com/VX1gCFR.png" alt="Logo" class="w-12 h-12">
-    <h1 class="text-2xl font-bold text-center">Imputación Formal de Cargos</h1>
+  <div class="text-center mb-4">
+    <img src="https://i.imgur.com/VX1gCFR.png" class="mx-auto w-16 h-16" />
+    <h1 class="text-2xl font-bold">Imputación Formal de Cargos</h1>
   </div>
 
-  <div class="flex justify-center mb-4">
-    <button onclick="window.location.href='https://pabletorg.github.io/sigp/index.html'" class="bg-gray-600 hover:bg-gray-700 p-2 px-4 rounded font-medium">Volver al menú principal</button>
+  <div class="flex justify-center mb-6">
+    <button onclick="window.location.href='https://pabletorg.github.io/sigp/index.html'" class="bg-gray-700 hover:bg-gray-800 px-4 py-2 rounded">Volver al menú principal</button>
   </div>
 
-  <div class="space-y-4 max-w-3xl mx-auto">
-
+  <div class="max-w-3xl mx-auto space-y-6">
     <div class="grid grid-cols-3 gap-4">
-      <label class="block">
-        <span class="text-lg font-medium">Día:</span>
-        <input type="text" id="dia" class="w-full p-2 rounded bg-gray-800 text-white mt-1">
-      </label>
-      <label class="block">
-        <span class="text-lg font-medium">Mes:</span>
-        <input type="text" id="mes" class="w-full p-2 rounded bg-gray-800 text-white mt-1">
-      </label>
-      <label class="block">
-        <span class="text-lg font-medium">Año:</span>
-        <input type="text" id="anio" class="w-full p-2 rounded bg-gray-800 text-white mt-1">
-      </label>
+      <input type="text" id="dia" placeholder="Día" class="p-2 bg-gray-800 rounded">
+      <input type="text" id="mes" placeholder="Mes" class="p-2 bg-gray-800 rounded">
+      <input type="text" id="anio" placeholder="Año" class="p-2 bg-gray-800 rounded">
     </div>
 
-    <!-- Sección de Personas Implicadas -->
     <div>
-      <h2 class="text-xl font-bold mt-4 mb-2">Personas Implicadas</h2>
-      <div id="personas"></div>
-      <button onclick="abrirModal('modalPersona')" class="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded">➕ Añadir Persona</button>
-    </div>
-
-    <!-- Sección de Formulación de Cargos -->
-    <div>
-      <h2 class="text-xl font-bold mt-6 mb-2">Formulación de Cargos</h2>
-      <div id="cargos"></div>
-      <button onclick="abrirModal('modalCargo')" class="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded">➕ Añadir Cargo</button>
-    </div>
-
-    <!-- OTROS -->
-    <label class="block mt-4">
-      <span class="text-lg font-medium">Información adicional (OTROS):</span>
-      <textarea id="otros" rows="3" class="w-full p-2 rounded bg-gray-800 text-white mt-1"></textarea>
-    </label>
-
-    <!-- Firma -->
-    <h2 class="text-xl font-bold mt-6 mb-2">Firma</h2>
-    <label class="block">
-      <span class="text-lg font-medium">Agente:</span>
-      <input type="text" id="agente" class="w-full p-2 rounded bg-gray-800 text-white mt-1">
-    </label>
-    <label class="block">
-      <span class="text-lg font-medium">Rango:</span>
-      <input type="text" id="rango" class="w-full p-2 rounded bg-gray-800 text-white mt-1">
-    </label>
-    <label class="block">
-      <span class="text-lg font-medium">Placa:</span>
-      <input type="text" id="placa" class="w-full p-2 rounded bg-gray-800 text-white mt-1">
-    </label>
-    <label class="block">
-      <span class="text-lg font-medium">Firma:</span>
-      <input type="text" id="firma" class="w-full p-2 rounded bg-gray-800 text-white mt-1">
-    </label>
-
-    <!-- Botones -->
-    <div class="flex flex-col sm:flex-row gap-4 mt-4">
-      <button onclick="generarBBCode()" class="w-full bg-green-600 hover:bg-green-700 p-3 rounded font-bold">Generar BBCode</button>
-      <button onclick="location.reload()" class="w-full bg-red-600 hover:bg-red-700 p-3 rounded font-bold">Limpiar</button>
-    </div>
-
-    <!-- Resultado -->
-    <label class="block">
-      <span class="text-lg font-medium">Resultado (BBCode):</span>
-      <div class="flex gap-2 mt-1">
-        <textarea id="resultado" rows="20" readonly class="w-full p-2 rounded bg-gray-800 text-green-400"></textarea>
-        <button onclick="copiarTexto('resultado')" class="bg-yellow-500 hover:bg-yellow-600 px-4 rounded h-12 mt-1">📋</button>
+      <div class="flex justify-between items-center">
+        <label class="text-lg font-semibold">Personas Implicadas (BBCode):</label>
+        <button onclick="abrirModal('modalPersona')" class="bg-blue-600 hover:bg-blue-700 px-3 py-1 rounded">+ Añadir</button>
       </div>
-    </label>
+      <textarea id="personas" rows="5" class="w-full bg-gray-800 p-2 rounded mt-1 text-sm"></textarea>
+    </div>
+
+    <div>
+      <div class="flex justify-between items-center">
+        <label class="text-lg font-semibold">Formulación de Cargos (BBCode):</label>
+        <button onclick="abrirModal('modalCargo')" class="bg-blue-600 hover:bg-blue-700 px-3 py-1 rounded">+ Añadir</button>
+      </div>
+      <textarea id="cargos" rows="5" class="w-full bg-gray-800 p-2 rounded mt-1 text-sm"></textarea>
+    </div>
+
+    <div>
+      <label class="text-lg font-semibold">Otros (comentarios):</label>
+      <textarea id="otros" rows="3" class="w-full bg-gray-800 p-2 rounded mt-1 text-sm"></textarea>
+    </div>
+
+    <div>
+      <h2 class="text-lg font-semibold">Firma</h2>
+      <input type="text" id="agente" placeholder="Agente" class="w-full bg-gray-800 p-2 rounded mt-1">
+      <input type="text" id="rango" placeholder="Rango" class="w-full bg-gray-800 p-2 rounded mt-2">
+      <input type="text" id="placa" placeholder="Placa" class="w-full bg-gray-800 p-2 rounded mt-2">
+      <input type="text" id="firma" placeholder="Firma" class="w-full bg-gray-800 p-2 rounded mt-2">
+    </div>
+
+    <div class="flex gap-4">
+      <button onclick="generarBBCode()" class="bg-green-600 hover:bg-green-700 w-full py-2 rounded font-bold">Generar BBCode</button>
+      <button onclick="copiarTexto('resultado')" class="bg-yellow-500 hover:bg-yellow-600 w-full py-2 rounded font-bold">📋 Copiar</button>
+    </div>
+
+    <textarea id="resultado" rows="20" readonly class="w-full bg-gray-800 p-2 rounded text-green-400 text-sm"></textarea>
   </div>
 
-  <!-- Modales -->
-  <div id="modalPersona" class="hidden fixed inset-0 modal-bg z-50 flex items-center justify-center">
-    <div class="bg-gray-800 p-6 rounded w-full max-w-xl space-y-4">
-      <h2 class="text-xl font-bold mb-2">Añadir Persona Implicada</h2>
-      <input type="text" id="personaNombre" placeholder="Nombre y Apellido" class="w-full p-2 rounded bg-gray-700 text-white">
-      <input type="text" id="personaDNI" placeholder="DNI" class="w-full p-2 rounded bg-gray-700 text-white">
-      <div class="space-y-1 text-sm">
-        <label><input type="checkbox" value="VICTIMA" class="rol"> VÍCTIMA</label>
-        <label><input type="checkbox" value="TESTIGO" class="rol"> TESTIGO</label>
-        <label><input type="checkbox" value="AUTOR" class="rol"> AUTOR</label>
-        <label><input type="checkbox" value="CÓMPLICE" class="rol"> CÓMPLICE</label>
-        <label><input type="checkbox" value="COOPERADOR" class="rol"> COOPERADOR</label>
-        <label><input type="checkbox" value="INDUCTOR" class="rol"> INDUCTOR</label>
+  <!-- MODAL Persona -->
+  <div id="modalPersona" class="hidden fixed inset-0 flex items-center justify-center z-50 modal-bg">
+    <div class="bg-gray-800 p-6 rounded space-y-4 w-full max-w-lg">
+      <h2 class="text-xl font-bold">Añadir Persona</h2>
+      <input id="pNombre" placeholder="Nombre y Apellido" class="w-full p-2 bg-gray-700 rounded">
+      <input id="pDNI" placeholder="DNI" class="w-full p-2 bg-gray-700 rounded">
+      <div class="text-sm">
+        <label><input type="checkbox" class="rol" value="VICTIMA"> Víctima</label><br>
+        <label><input type="checkbox" class="rol" value="TESTIGO"> Testigo</label><br>
+        <label><input type="checkbox" class="rol" value="AUTOR"> Autor</label><br>
+        <label><input type="checkbox" class="rol" value="CÓMPLICE"> Cómplice</label><br>
+        <label><input type="checkbox" class="rol" value="COOPERADOR"> Cooperador</label><br>
+        <label><input type="checkbox" class="rol" value="INDUCTOR"> Inductor</label>
       </div>
       <div class="flex justify-end gap-2">
         <button onclick="cerrarModal('modalPersona')" class="bg-gray-600 px-4 py-2 rounded">Cancelar</button>
-        <button onclick="confirmarPersona()" class="bg-blue-600 px-4 py-2 rounded">Añadir</button>
+        <button onclick="insertarPersona()" class="bg-blue-600 px-4 py-2 rounded">Añadir</button>
       </div>
     </div>
   </div>
 
-  <div id="modalCargo" class="hidden fixed inset-0 modal-bg z-50 flex items-center justify-center">
-    <div class="bg-gray-800 p-6 rounded w-full max-w-xl space-y-4">
-      <h2 class="text-xl font-bold mb-2">Añadir Formulación de Cargo</h2>
-      <input type="text" id="cargoTitulo" placeholder="Título" class="w-full p-2 rounded bg-gray-700 text-white">
-      <input type="text" id="cargoArticulo" placeholder="Artículo" class="w-full p-2 rounded bg-gray-700 text-white">
-      <input type="text" id="cargoAgravantes" placeholder="Agravantes" class="w-full p-2 rounded bg-gray-700 text-white">
-      <input type="text" id="cargoAtenuantes" placeholder="Atenuantes" class="w-full p-2 rounded bg-gray-700 text-white">
-      <input type="text" id="cargoExenciones" placeholder="Exenciones" class="w-full p-2 rounded bg-gray-700 text-white">
-      <input type="text" id="cargoOtros" placeholder="Otros" class="w-full p-2 rounded bg-gray-700 text-white">
+  <!-- MODAL Cargo -->
+  <div id="modalCargo" class="hidden fixed inset-0 flex items-center justify-center z-50 modal-bg">
+    <div class="bg-gray-800 p-6 rounded space-y-4 w-full max-w-lg">
+      <h2 class="text-xl font-bold">Añadir Cargo</h2>
+      <input id="cTitulo" placeholder="Título" class="w-full p-2 bg-gray-700 rounded">
+      <input id="cArticulo" placeholder="Artículo" class="w-full p-2 bg-gray-700 rounded">
+      <input id="cAgravantes" placeholder="Agravantes" class="w-full p-2 bg-gray-700 rounded">
+      <input id="cAtenuantes" placeholder="Atenuantes" class="w-full p-2 bg-gray-700 rounded">
+      <input id="cExenciones" placeholder="Exenciones" class="w-full p-2 bg-gray-700 rounded">
+      <input id="cOtros" placeholder="Otros" class="w-full p-2 bg-gray-700 rounded">
       <div class="flex justify-end gap-2">
         <button onclick="cerrarModal('modalCargo')" class="bg-gray-600 px-4 py-2 rounded">Cancelar</button>
-        <button onclick="confirmarCargo()" class="bg-blue-600 px-4 py-2 rounded">Añadir</button>
+        <button onclick="insertarCargo()" class="bg-blue-600 px-4 py-2 rounded">Añadir</button>
       </div>
     </div>
   </div>
@@ -134,28 +107,23 @@
 function abrirModal(id) {
   document.getElementById(id).classList.remove("hidden");
 }
-
 function cerrarModal(id) {
   document.getElementById(id).classList.add("hidden");
 }
 
-function confirmarPersona() {
-  const nombre = document.getElementById("personaNombre").value;
-  const dni = document.getElementById("personaDNI").value;
-  const roles = Array.from(document.querySelectorAll("#modalPersona .rol")).map(c => \`\${c.value} [\${c.checked ? 'X' : ' '}] \`).join(" | ");
-  const bloque = document.createElement("div");
-  bloque.className = "bg-gray-800 border p-4 rounded mt-2";
-  bloque.innerText = `[b]1.1.1 Nombre y apellido:[/b] ${nombre}\n[b]1.1.2 Número de DNI:[/b] ${dni}\n[b]1.1.3.1 Rol de la persona:[/b] ${roles}`;
-  document.getElementById("personas").appendChild(bloque);
+function insertarPersona() {
+  const nombre = document.getElementById("pNombre").value;
+  const dni = document.getElementById("pDNI").value;
+  const roles = Array.from(document.querySelectorAll("#modalPersona .rol")).map(c => `${c.value} [${c.checked ? "X" : " "}]`).join(" | ");
+  const bloque = `[b]1.1.1 Nombre y apellido:[/b] ${nombre}\n[b]1.1.2 Número de DNI:[/b] ${dni}\n[b]1.1.3.1 Rol de la persona:[/b] ${roles}\n`;
+  document.getElementById("personas").value += bloque + "\n";
   cerrarModal("modalPersona");
 }
 
-function confirmarCargo() {
+function insertarCargo() {
   const t = id => document.getElementById(id).value;
-  const bloque = document.createElement("div");
-  bloque.className = "bg-gray-800 border p-4 rounded mt-2";
-  bloque.innerText = `[b]2.1 TITULO:[/b] ${t("cargoTitulo")} | [b]ARTÍCULO:[/b] ${t("cargoArticulo")}\n[b]2.1.1 AGRAVANTES:[/b] ${t("cargoAgravantes")}\n[b]2.1.2 ATENUANTES:[/b] ${t("cargoAtenuantes")}\n[b]2.1.3 EXENCIONES:[/b] ${t("cargoExenciones")}\n[b]2.1.4 OTROS:[/b] ${t("cargoOtros")}`;
-  document.getElementById("cargos").appendChild(bloque);
+  const bloque = `[b]2.1 TITULO:[/b] ${t("cTitulo")} | [b]ARTÍCULO:[/b] ${t("cArticulo")}\n[b]2.1.1 AGRAVANTES:[/b] ${t("cAgravantes")}\n[b]2.1.2 ATENUANTES:[/b] ${t("cAtenuantes")}\n[b]2.1.3 EXENCIONES:[/b] ${t("cExenciones")}\n[b]2.1.4 OTROS:[/b] ${t("cOtros")}\n`;
+  document.getElementById("cargos").value += bloque + "\n";
   cerrarModal("modalCargo");
 }
 
@@ -169,14 +137,13 @@ function generarBBCode() {
   const dia = document.getElementById("dia").value;
   const mes = document.getElementById("mes").value;
   const anio = document.getElementById("anio").value;
+  const personas = document.getElementById("personas").value;
+  const cargos = document.getElementById("cargos").value;
   const otros = document.getElementById("otros").value;
   const agente = document.getElementById("agente").value;
   const rango = document.getElementById("rango").value;
   const placa = document.getElementById("placa").value;
   const firma = document.getElementById("firma").value;
-
-  const personas = Array.from(document.querySelectorAll("#personas > div")).map(d => d.innerText).join("\n\n");
-  const cargos = Array.from(document.querySelectorAll("#cargos > div")).map(d => d.innerText).join("\n\n");
 
   const bbcode = `[quote]
 [img(400px,82px)]https://i.servimg.com/u/f35/20/25/05/51/marca_32.png[/img]
@@ -216,6 +183,5 @@ ${firma}
   document.getElementById("resultado").value = bbcode;
 }
 </script>
-
 </body>
 </html>
