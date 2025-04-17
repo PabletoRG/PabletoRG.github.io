@@ -7,6 +7,7 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     textarea { white-space: pre-line; }
+    .modal-bg { background-color: rgba(0, 0, 0, 0.7); }
   </style>
 </head>
 <body class="bg-gray-900 text-white p-6 space-y-6">
@@ -37,22 +38,22 @@
       </label>
     </div>
 
-    <!-- Personas implicadas -->
+    <!-- Sección de Personas Implicadas -->
     <div>
       <h2 class="text-xl font-bold mt-4 mb-2">Personas Implicadas</h2>
       <div id="personas"></div>
-      <button onclick="agregarPersona()" class="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded">Añadir Persona</button>
+      <button onclick="abrirModal('modalPersona')" class="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded">➕ Añadir Persona</button>
     </div>
 
-    <!-- Formulación de cargos -->
+    <!-- Sección de Formulación de Cargos -->
     <div>
       <h2 class="text-xl font-bold mt-6 mb-2">Formulación de Cargos</h2>
       <div id="cargos"></div>
-      <button onclick="agregarCargo()" class="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded">Añadir Cargo</button>
+      <button onclick="abrirModal('modalCargo')" class="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded">➕ Añadir Cargo</button>
     </div>
 
-    <!-- Otros -->
-    <label class="block">
+    <!-- OTROS -->
+    <label class="block mt-4">
       <span class="text-lg font-medium">Información adicional (OTROS):</span>
       <textarea id="otros" rows="3" class="w-full p-2 rounded bg-gray-800 text-white mt-1"></textarea>
     </label>
@@ -92,39 +93,70 @@
     </label>
   </div>
 
+  <!-- Modales -->
+  <div id="modalPersona" class="hidden fixed inset-0 modal-bg z-50 flex items-center justify-center">
+    <div class="bg-gray-800 p-6 rounded w-full max-w-xl space-y-4">
+      <h2 class="text-xl font-bold mb-2">Añadir Persona Implicada</h2>
+      <input type="text" id="personaNombre" placeholder="Nombre y Apellido" class="w-full p-2 rounded bg-gray-700 text-white">
+      <input type="text" id="personaDNI" placeholder="DNI" class="w-full p-2 rounded bg-gray-700 text-white">
+      <div class="space-y-1 text-sm">
+        <label><input type="checkbox" value="VICTIMA" class="rol"> VÍCTIMA</label>
+        <label><input type="checkbox" value="TESTIGO" class="rol"> TESTIGO</label>
+        <label><input type="checkbox" value="AUTOR" class="rol"> AUTOR</label>
+        <label><input type="checkbox" value="CÓMPLICE" class="rol"> CÓMPLICE</label>
+        <label><input type="checkbox" value="COOPERADOR" class="rol"> COOPERADOR</label>
+        <label><input type="checkbox" value="INDUCTOR" class="rol"> INDUCTOR</label>
+      </div>
+      <div class="flex justify-end gap-2">
+        <button onclick="cerrarModal('modalPersona')" class="bg-gray-600 px-4 py-2 rounded">Cancelar</button>
+        <button onclick="confirmarPersona()" class="bg-blue-600 px-4 py-2 rounded">Añadir</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="modalCargo" class="hidden fixed inset-0 modal-bg z-50 flex items-center justify-center">
+    <div class="bg-gray-800 p-6 rounded w-full max-w-xl space-y-4">
+      <h2 class="text-xl font-bold mb-2">Añadir Formulación de Cargo</h2>
+      <input type="text" id="cargoTitulo" placeholder="Título" class="w-full p-2 rounded bg-gray-700 text-white">
+      <input type="text" id="cargoArticulo" placeholder="Artículo" class="w-full p-2 rounded bg-gray-700 text-white">
+      <input type="text" id="cargoAgravantes" placeholder="Agravantes" class="w-full p-2 rounded bg-gray-700 text-white">
+      <input type="text" id="cargoAtenuantes" placeholder="Atenuantes" class="w-full p-2 rounded bg-gray-700 text-white">
+      <input type="text" id="cargoExenciones" placeholder="Exenciones" class="w-full p-2 rounded bg-gray-700 text-white">
+      <input type="text" id="cargoOtros" placeholder="Otros" class="w-full p-2 rounded bg-gray-700 text-white">
+      <div class="flex justify-end gap-2">
+        <button onclick="cerrarModal('modalCargo')" class="bg-gray-600 px-4 py-2 rounded">Cancelar</button>
+        <button onclick="confirmarCargo()" class="bg-blue-600 px-4 py-2 rounded">Añadir</button>
+      </div>
+    </div>
+  </div>
+
 <script>
-function agregarPersona() {
-  const container = document.createElement('div');
-  container.className = "space-y-2 border p-4 rounded bg-gray-800 mt-4";
-  container.innerHTML = \`
-    <button onclick="this.parentElement.remove()" class="float-right text-red-400 font-bold">Eliminar ✖</button>
-    <label>Nombre y Apellido:<input type="text" class="persona-nombre w-full p-2 rounded bg-gray-900 text-white mt-1"></label>
-    <label>DNI:<input type="text" class="persona-dni w-full p-2 rounded bg-gray-900 text-white mt-1"></label>
-    <label>Rol:<br>
-      VÍCTIMA [ ] <input type="checkbox" class="rol" value="VICTIMA">
-      TESTIGO [ ] <input type="checkbox" class="rol" value="TESTIGO">
-      AUTOR [ ] <input type="checkbox" class="rol" value="AUTOR">
-      CÓMPLICE [ ] <input type="checkbox" class="rol" value="CÓMPLICE">
-      COOPERADOR [ ] <input type="checkbox" class="rol" value="COOPERADOR">
-      INDUCTOR [ ] <input type="checkbox" class="rol" value="INDUCTOR">
-    </label>
-  \`;
-  document.getElementById("personas").appendChild(container);
+function abrirModal(id) {
+  document.getElementById(id).classList.remove("hidden");
 }
 
-function agregarCargo() {
-  const container = document.createElement('div');
-  container.className = "space-y-2 border p-4 rounded bg-gray-800 mt-4";
-  container.innerHTML = \`
-    <button onclick="this.parentElement.remove()" class="float-right text-red-400 font-bold">Eliminar ✖</button>
-    <label>Título:<input type="text" class="cargo-titulo w-full p-2 rounded bg-gray-900 text-white mt-1"></label>
-    <label>Artículo:<input type="text" class="cargo-articulo w-full p-2 rounded bg-gray-900 text-white mt-1"></label>
-    <label>Agravantes:<input type="text" class="cargo-agravantes w-full p-2 rounded bg-gray-900 text-white mt-1"></label>
-    <label>Atenuantes:<input type="text" class="cargo-atenuantes w-full p-2 rounded bg-gray-900 text-white mt-1"></label>
-    <label>Exenciones:<input type="text" class="cargo-exenciones w-full p-2 rounded bg-gray-900 text-white mt-1"></label>
-    <label>Otros:<input type="text" class="cargo-otros w-full p-2 rounded bg-gray-900 text-white mt-1"></label>
-  \`;
-  document.getElementById("cargos").appendChild(container);
+function cerrarModal(id) {
+  document.getElementById(id).classList.add("hidden");
+}
+
+function confirmarPersona() {
+  const nombre = document.getElementById("personaNombre").value;
+  const dni = document.getElementById("personaDNI").value;
+  const roles = Array.from(document.querySelectorAll("#modalPersona .rol")).map(c => \`\${c.value} [\${c.checked ? 'X' : ' '}] \`).join(" | ");
+  const bloque = document.createElement("div");
+  bloque.className = "bg-gray-800 border p-4 rounded mt-2";
+  bloque.innerText = `[b]1.1.1 Nombre y apellido:[/b] ${nombre}\n[b]1.1.2 Número de DNI:[/b] ${dni}\n[b]1.1.3.1 Rol de la persona:[/b] ${roles}`;
+  document.getElementById("personas").appendChild(bloque);
+  cerrarModal("modalPersona");
+}
+
+function confirmarCargo() {
+  const t = id => document.getElementById(id).value;
+  const bloque = document.createElement("div");
+  bloque.className = "bg-gray-800 border p-4 rounded mt-2";
+  bloque.innerText = `[b]2.1 TITULO:[/b] ${t("cargoTitulo")} | [b]ARTÍCULO:[/b] ${t("cargoArticulo")}\n[b]2.1.1 AGRAVANTES:[/b] ${t("cargoAgravantes")}\n[b]2.1.2 ATENUANTES:[/b] ${t("cargoAtenuantes")}\n[b]2.1.3 EXENCIONES:[/b] ${t("cargoExenciones")}\n[b]2.1.4 OTROS:[/b] ${t("cargoOtros")}`;
+  document.getElementById("cargos").appendChild(bloque);
+  cerrarModal("modalCargo");
 }
 
 function copiarTexto(id) {
@@ -143,54 +175,43 @@ function generarBBCode() {
   const placa = document.getElementById("placa").value;
   const firma = document.getElementById("firma").value;
 
-  let personas = "";
-  document.querySelectorAll("#personas > div").forEach(p => {
-    const nombre = p.querySelector(".persona-nombre").value;
-    const dni = p.querySelector(".persona-dni").value;
-    const roles = Array.from(p.querySelectorAll(".rol")).map(c => \`\${c.value} [\${c.checked ? 'X' : ' '}] \`).join(" | ");
-    personas += \`[b]1.1.1 Nombre y apellido:[/b] \${nombre}\n[b]1.1.2 Número de DNI:[/b] \${dni}\n[b]1.1.3.1 Rol de la persona:[/b] \${roles}\n\n\`;
-  });
+  const personas = Array.from(document.querySelectorAll("#personas > div")).map(d => d.innerText).join("\n\n");
+  const cargos = Array.from(document.querySelectorAll("#cargos > div")).map(d => d.innerText).join("\n\n");
 
-  let cargos = "";
-  document.querySelectorAll("#cargos > div").forEach(c => {
-    cargos += \`[b]2.1 TITULO:[/b] \${c.querySelector(".cargo-titulo").value} | [b]ARTÍCULO:[/b] \${c.querySelector(".cargo-articulo").value}\n\`;
-    cargos += \`[b]2.1.1 AGRAVANTES:[/b] \${c.querySelector(".cargo-agravantes").value}\n[b]2.1.2 ATENUANTES:[/b] \${c.querySelector(".cargo-atenuantes").value}\n\`;
-    cargos += \`[b]2.1.3 EXENCIONES:[/b] \${c.querySelector(".cargo-exenciones").value}\n[b]2.1.4 OTROS:[/b] \${c.querySelector(".cargo-otros").value}\n\n\`;
-  });
-
-  const bbcode = \`[quote]
+  const bbcode = `[quote]
 [img(400px,82px)]https://i.servimg.com/u/f35/20/25/05/51/marca_32.png[/img]
 [font=Courier New][size=18][b]IMPUTACIÓN FORMAL DE CARGOS ANTE EL TRIBUNAL[/b][/size]
-[size=16][b]A \${dia} de \${mes} del año \${anio}.[/b][/size][/font]
+[size=16][b]A ${dia} de ${mes} del año ${anio}.[/b][/size][/font]
 [hr]
 [font=Courier New][size=16][b]1. DATOS DEL SUMARIO[/b][/size]
 
 [b]1.1 PERSONAS:[/b] 
-\${personas}
+${personas}
 
 [b]1.2 DOCUMENTACIÓN:[/b]
 [spoiler="informe.pdf"](Anexar aquí el informe y/o cualquier documento necesario)[/spoiler]
 
 [b]1.3 OTROS:[/b]
-> \${otros}[/font]
+> ${otros}[/font]
 
 [hr]
 [font=Courier New][size=16][b]2. FORMULACIÓN DE CARGOS.[/b][/size]
-\${cargos}[hr]
+${cargos}
+[hr]
 [font=Courier New][size=16][b]3. DATOS, FIRMA Y COMPROMISO[/b][/size]
 
 Diligenciado este formulario, entiendo que el sumario y toda información anexa ha sido compulsada a la Fiscalía de Riverside y al tribunal competente para su respectiva atención. Doy fe de que la información aquí presentada es verídica.
 
-[b]AGENTE:[/b] \${agente}
-[b]RANGO:[/b] \${rango}
-[b]PLACA:[/b] \${placa}
+[b]AGENTE:[/b] ${agente}
+[b]RANGO:[/b] ${rango}
+[b]PLACA:[/b] ${placa}
 
 [b]Firma,[/b]
-\${firma}
+${firma}
 [/font]
 <hr size="3" />
 [right][i][size=10]Departamento de Justicia.[/size][/i][/right]
-[/quote]\`;
+[/quote]`;
 
   document.getElementById("resultado").value = bbcode;
 }
