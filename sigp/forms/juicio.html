@@ -22,6 +22,10 @@
   </div>
 
   <div class="max-w-3xl mx-auto space-y-6">
+    <div>
+      <label class="text-lg font-semibold">Contenido del informe (se mostrará dentro del spoiler):</label>
+      <textarea id="informeTexto" rows="4" class="w-full p-2 rounded bg-gray-800 text-sm mt-1"></textarea>
+    </div>
     <div class="grid grid-cols-3 gap-4">
       <input type="text" id="dia" placeholder="Día" class="p-2 bg-gray-800 rounded">
       <input type="text" id="mes" placeholder="Mes" class="p-2 bg-gray-800 rounded">
@@ -145,7 +149,9 @@ function generarBBCode() {
   const placa = document.getElementById("placa").value;
   const firma = document.getElementById("firma").value;
 
-  const bbcode = `[quote]
+  const informeTexto = document.getElementById("informeTexto").value;
+
+const bbcode = `[quote]
 [img(400px,82px)]https://i.servimg.com/u/f35/20/25/05/51/marca_32.png[/img]
 [font=Courier New][size=18][b]IMPUTACIÓN FORMAL DE CARGOS ANTE EL TRIBUNAL[/b][/size]
 [size=16][b]A ${dia} de ${mes} del año ${anio}.[/b][/size][/font]
@@ -156,7 +162,7 @@ function generarBBCode() {
 ${personas}
 
 [b]1.2 DOCUMENTACIÓN:[/b]
-[spoiler="informe.pdf"](Anexar aquí el informe y/o cualquier documento necesario)[/spoiler]
+[spoiler="informe.pdf"]${informeTexto}[/spoiler]
 
 [b]1.3 OTROS:[/b]
 > ${otros}[/font]
