@@ -42,6 +42,7 @@ function generarBBCode() {
   <button onclick="window.location.href='../index.html'" class="bg-gray-600 hover:bg-gray-700 p-2 px-4 rounded font-medium">Volver al menú principal</button>
   <button onclick="document.getElementById('modal-afis').classList.remove('hidden')" class="bg-blue-600 hover:bg-blue-700 p-2 px-4 rounded font-medium">Añadir evidencia AFIS</button>
   <button onclick="document.getElementById('modal-ibis').classList.remove('hidden')" class="bg-indigo-600 hover:bg-indigo-700 p-2 px-4 rounded font-medium">Añadir evidencia IBIS</button>
+  <button onclick="document.getElementById('modal-codis').classList.remove('hidden')" class="bg-red-600 hover:bg-red-700 p-2 px-4 rounded font-medium">Añadir prueba CODIS</button>
 </div>
 
   <!-- Formulario -->
@@ -430,7 +431,92 @@ function generarBBCode() {
 
 </script>
 
+<!-- Modal CODIS -->
+<div id="modal-codis" class="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center hidden z-50">
+  <div class="bg-white text-black rounded-lg p-6 w-full max-w-xl space-y-4 relative">
+    <h2 class="text-xl font-bold mb-2">Prueba CODIS</h2>
+    <button onclick="document.getElementById('modal-codis').classList.add('hidden')" class="absolute top-2 right-4 text-red-600 text-xl">✖</button>
 
+    <label>Fecha del informe:
+      <input type="text" id="codis-fecha" placeholder="DD/MM/AAAA" class="w-full border p-1 mt-1">
+    </label>
+
+    <label>Nombre del agente:
+      <input type="text" id="codis-agente" class="w-full border p-1 mt-1">
+    </label>
+
+    <label>Lugar o situación en que se recolectó la sangre:
+      <input type="text" id="codis-situacion" class="w-full border p-1 mt-1">
+    </label>
+
+    <label>Nombre del sospechoso:
+      <input type="text" id="codis-sospechoso" class="w-full border p-1 mt-1">
+    </label>
+
+    <label>Resultado:
+      <select id="codis-resultado" class="w-full border p-1 mt-1">
+        <option value="coincide">Coincide</option>
+        <option value="no coincide">No coincide</option>
+      </select>
+    </label>
+
+    <div class="flex gap-2">
+      <button onclick="generarCODIS()" class="bg-green-700 hover:bg-green-800 text-white py-2 px-4 rounded w-full">Generar</button>
+      <button onclick="limpiarCODIS()" class="bg-gray-600 hover:bg-gray-700 text-white py-2 px-4 rounded w-full">Limpiar</button>
+    </div>
+
+    <textarea id="codis-resultado-final" rows="10" class="w-full mt-2 p-2 bg-gray-800 text-green-400 rounded" readonly></textarea>
+    <button onclick="copiarTexto('codis-resultado-final')" class="w-full bg-yellow-500 hover:bg-yellow-600 text-black font-bold py-2 rounded">📋 Copiar</button>
+  </div>
+</div>
+
+  
+<script>
+  function generarCODIS() {
+  const fecha = document.getElementById("codis-fecha").value;
+  const agente = document.getElementById("codis-agente").value;
+  const situacion = document.getElementById("codis-situacion").value;
+  const sospechoso = document.getElementById("codis-sospechoso").value;
+  const resultado = document.getElementById("codis-resultado").value;
+
+  const resultadoTexto = resultado === "coincide"
+    ? '[b][color=green]COINCIDE[/color][/b]'
+    : '[b][color=red]NO COINCIDE[/color][/b]';
+
+  const bbcode = `[quote]
+[right][size=9][i]Riverside Rescue & Riverside Police Department[/i][/size][/right] 
+
+[center][img(200px,200px)]https://i.imgur.com/iPc507t.png[/img][/center]
+
+[center][size=16][b][color=#2E5A87]Prueba de perfil genético CODIS de ADN[/color][/b][/size][/center] 
+
+[hr]
+
+[font=arial][size=12]
+Fecha: [b]${fecha}[/b]   
+
+[b]Agente:[/b] ${agente}   
+[b]La sangre recolectada en:[/b] ${situacion} 
+
+Tras el análisis del perfil genético y cotejo con la base de datos [b]CODIS[/b], se obtenien los siguientes resultados:
+[/size][/font]
+[list][*]La sangre entregada a Riverside Rescue ${resultadoTexto} con el ADN de: [b]${sospechoso}[/b] 
+[/list]
+
+[/quote]`;
+
+  document.getElementById("codis-resultado-final").value = bbcode;
+}
+
+function limpiarCODIS() {
+  document.getElementById("codis-fecha").value = "";
+  document.getElementById("codis-agente").value = "";
+  document.getElementById("codis-situacion").value = "";
+  document.getElementById("codis-sospechoso").value = "";
+  document.getElementById("codis-resultado").selectedIndex = 0;
+  document.getElementById("codis-resultado-final").value = "";
+}
+</script>
 
 
 <script>
