@@ -151,7 +151,7 @@ function generarBBCode() {
 
   const informeTexto = document.getElementById("informeTexto").value;
 
-const bbcode = `[quote]
+const bbcode = `<div style="width:746px;margin-left:auto;margin-right:auto;border:1px solid #000000;padding:10px;background-color:#ffffff;color:rgb(0,0,0);">
 [img(400px,82px)]https://i.servimg.com/u/f35/20/25/05/51/marca_32.png[/img]
 [font=Courier New][size=18][b]IMPUTACIÓN FORMAL DE CARGOS ANTE EL TRIBUNAL[/b][/size]
 [size=16][b]A ${dia} de ${mes} del año ${anio}.[/b][/size][/font]
@@ -170,7 +170,7 @@ ${personas}
 [hr]
 [font=Courier New][size=16][b]2. FORMULACIÓN DE CARGOS.[/b][/size]
 ${cargos}
-[hr]
+[/font][hr]
 [font=Courier New][size=16][b]3. DATOS, FIRMA Y COMPROMISO[/b][/size]
 
 Diligenciado este formulario, entiendo que el sumario y toda información anexa ha sido compulsada a la Fiscalía de Riverside y al tribunal competente para su respectiva atención. Doy fe de que la información aquí presentada es verídica.
@@ -184,7 +184,7 @@ ${firma}
 [/font]
 <hr size="3" />
 [right][i][size=10]Departamento de Justicia.[/size][/i][/right]
-[/quote]`;
+</div>`;
 
   document.getElementById("resultado").value = bbcode;
 }
