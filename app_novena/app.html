@@ -1,0 +1,207 @@
+<!doctype html>
+<html lang="es" class="h-full">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#dc2626">
+  <meta name="description" content="Inventario de Máquinas - Novena Compañía de Bomberos de Viña del Mar">
+  <title>Inventario Carros de Bomberos</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Russo+One&family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Poppins', sans-serif; }
+    .font-heading { font-family: 'Russo One', sans-serif; }
+    @keyframes slideInDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes slideInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    .animate-slide-in-down { animation: slideInDown 0.4s ease-out; }
+    .animate-slide-in-up { animation: slideInUp 0.4s ease-out; }
+    .animate-fade-in { animation: fadeIn 0.3s ease-out; }
+    .modal-overlay { background: rgba(0, 0, 0, 0.75); backdrop-filter: blur(6px); }
+    .fire-gradient { background: linear-gradient(135deg, #dc2626 0%, #f97316 50%, #eab308 100%); }
+    .glass-effect { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1); }
+    .custom-scrollbar::-webkit-scrollbar { width: 8px; }
+    .custom-scrollbar::-webkit-scrollbar-track { background: #1f2937; border-radius: 4px; }
+    .custom-scrollbar::-webkit-scrollbar-thumb { background: #dc2626; border-radius: 4px; }
+    input, textarea, select { transition: all 0.2s ease; }
+    input:focus, textarea:focus, select:focus { transform: scale(1.01); }
+    .tab-btn { transition: all 0.3s ease; position: relative; overflow: hidden; }
+    .tab-btn::after { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 3px; background: #fbbf24; transform: scaleX(0); transition: transform 0.3s ease; }
+    .tab-btn.active::after { transform: scaleX(1); }
+    .product-card { transition: all 0.3s ease; position: relative; overflow: hidden; }
+    .product-card:hover { transform: translateY(-4px); box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3); }
+  </style>
+</head>
+<body class="h-full" style="background: linear-gradient(135deg, #0f172a 0%, #111827 100%);">
+  <div id="app" class="h-full w-full overflow-auto custom-scrollbar flex flex-col" style="background-color: #111827;">
+    
+    <header class="sticky top-0 z-40 fire-gradient shadow-2xl">
+      <div class="max-w-7xl mx-auto w-full px-4 py-4">
+        <div class="flex items-center justify-between gap-4">
+          <div class="flex items-center gap-4">
+            <div class="w-16 h-16 rounded-xl overflow-hidden shadow-lg flex-shrink-0 flex items-center justify-center bg-blue-900 text-yellow-400 font-heading text-4xl border-2 border-yellow-400">9</div>
+            <div>
+              <h1 class="font-heading text-2xl md:text-3xl text-white drop-shadow-lg">Inventario Bomberos</h1>
+              <p class="text-yellow-400 text-sm font-semibold">Novena Compañía - Viña del Mar</p>
+            </div>
+          </div>
+          <div class="flex items-center gap-3">
+            <button id="login-btn-header" class="flex items-center gap-2 px-5 py-3 rounded-xl font-bold text-white shadow-lg hover:scale-105 transition-transform bg-white/20 backdrop-blur">
+              <span>Login</span>
+            </button> 
+            <button id="add-product-btn" class="hidden items-center gap-2 px-5 py-3 rounded-xl font-bold text-white shadow-lg hover:scale-105 transition-transform bg-white/20 backdrop-blur">
+              <span>Agregar</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main class="flex-1 overflow-auto custom-scrollbar">
+      <div class="max-w-7xl mx-auto w-full px-4 py-6">
+        
+        <div class="grid grid-cols-2 gap-4 mb-6">
+          <button id="machine-91-btn" class="tab-btn active px-6 py-4 rounded-xl font-bold text-white flex items-center justify-center gap-2 shadow-lg transition-all fire-gradient">Máquina 91</button> 
+          <button id="machine-92-btn" class="tab-btn px-6 py-4 rounded-xl font-bold text-white flex items-center justify-center gap-2 shadow-lg transition-all bg-gray-700">Máquina 92</button>
+        </div>
+
+        <div id="machine-91-content" class="animate-fade-in">
+          <div id="grid-91" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6"></div>
+        </div>
+        <div id="machine-92-content" class="hidden">
+          <div id="grid-92" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6"></div>
+        </div>
+      </div>
+    </main>
+
+    <div id="products-modal" class="fixed inset-0 z-50 hidden">
+      <div class="modal-overlay absolute inset-0" id="products-overlay"></div>
+      <div class="relative z-10 flex items-center justify-center min-h-full p-4">
+        <div class="w-full max-w-4xl rounded-2xl shadow-2xl max-h-[90%] overflow-auto custom-scrollbar bg-gray-800">
+          <div class="sticky top-0 fire-gradient px-6 py-4 rounded-t-2xl flex items-center justify-between">
+            <div>
+              <h2 class="font-heading text-2xl text-white" id="products-title">Productos</h2>
+              <p id="location-subtitle" class="text-sm text-yellow-100 mt-1">Ubicación</p>
+            </div>
+            <button id="close-products-btn" class="text-white/80 hover:text-white text-2xl">✕</button>
+          </div>
+          <div class="p-6">
+            <button id="add-to-location-btn" class="w-full mb-6 px-6 py-3 rounded-xl font-bold text-white fire-gradient hover:opacity-90 flex items-center justify-center gap-2">Agregar Producto</button>
+            <div id="products-list" class="space-y-4 text-white"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="toast-container" class="fixed bottom-4 right-4 z-50 space-y-2 pointer-events-none"></div>
+
+  </div>
+
+  <script>
+    // Configuración Inicial
+    const VALID_USER = 'NOVENA';
+    const VALID_PASSWORD = 'novena2013';
+    const LOCATIONS = {
+      '91': ['Cajonera 1', 'Cajonera 2', 'Cajonera 3', 'Cajonera 4', 'Cajonera 5', 'Cajonera 6', 'Cabina', 'Superior Estanque'],
+      '92': ['Cajonera 1', 'Cajonera 2', 'Cajonera 3', 'Cajonera 4', 'Cajonera 5', 'Cajonera 6', 'Cajonera 7', 'Cabina', 'Superior Estanque']
+    };
+
+    // Estado de la App
+    let allProducts = JSON.parse(localStorage.getItem('bomberos_inventory')) || [];
+    let currentMachine = '91';
+    let currentLocation = null;
+    let isAuthenticated = false;
+
+    // Inicialización
+    function initApp() {
+      renderLocations('91');
+      renderLocations('92');
+      setupEventListeners();
+      updateLocationCounts();
+    }
+
+    // Generar UI Dinámica
+    function renderLocations(machineId) {
+      const grid = document.getElementById(`grid-${machineId}`);
+      grid.innerHTML = LOCATIONS[machineId].map(loc => `
+        <button class="submenu-btn glass-effect p-6 rounded-xl text-white text-center hover:bg-white/10 transition-all" 
+                onclick="openProductsView('${machineId}', '${loc}')">
+          <div class="text-3xl mb-2">📦</div>
+          <h3 class="font-bold text-lg">${loc}</h3>
+          <p class="text-sm text-gray-400 mt-1" id="count-${machineId}-${loc.replace(/\s+/g, '-')}">0 items</p>
+        </button>
+      `).join('');
+    }
+
+    function updateLocationCounts() {
+      ['91', '92'].forEach(machine => {
+        LOCATIONS[machine].forEach(loc => {
+          const count = allProducts.filter(p => p.vehiculo === machine && p.cajonera === loc).length;
+          const elem = document.getElementById(`count-${machine}-${loc.replace(/\s+/g, '-')}`);
+          if (elem) elem.textContent = `${count} item${count !== 1 ? 's' : ''}`;
+        });
+      });
+    }
+
+    // Eventos Básicos
+    function setupEventListeners() {
+      document.getElementById('machine-91-btn').addEventListener('click', () => switchMachine('91'));
+      document.getElementById('machine-92-btn').addEventListener('click', () => switchMachine('92'));
+      document.getElementById('close-products-btn').addEventListener('click', closeProductsModal);
+      document.getElementById('products-overlay').addEventListener('click', closeProductsModal);
+    }
+
+    function switchMachine(machine) {
+      currentMachine = machine;
+      document.getElementById('machine-91-btn').classList.toggle('fire-gradient', machine === '91');
+      document.getElementById('machine-91-btn').classList.toggle('bg-gray-700', machine !== '91');
+      document.getElementById('machine-92-btn').classList.toggle('fire-gradient', machine === '92');
+      document.getElementById('machine-92-btn').classList.toggle('bg-gray-700', machine !== '92');
+      
+      document.getElementById('machine-91-content').classList.toggle('hidden', machine !== '91');
+      document.getElementById('machine-92-content').classList.toggle('hidden', machine !== '92');
+    }
+
+    function openProductsView(machine, location) {
+      currentMachine = machine;
+      currentLocation = location;
+      document.getElementById('products-title').textContent = location;
+      document.getElementById('location-subtitle').textContent = `Máquina ${machine}`;
+      renderProductsList();
+      document.getElementById('products-modal').classList.remove('hidden');
+    }
+
+    function closeProductsModal() {
+      document.getElementById('products-modal').classList.add('hidden');
+    }
+
+    function renderProductsList() {
+      const list = document.getElementById('products-list');
+      const products = allProducts.filter(p => p.vehiculo === currentMachine && p.cajonera === currentLocation);
+      
+      if (products.length === 0) {
+        list.innerHTML = `<p class="text-center text-gray-400 py-8">No hay productos aquí.</p>`;
+        return;
+      }
+      
+      list.innerHTML = products.map(product => `
+        <div class="p-4 bg-gray-700 rounded-xl mb-2">
+          <h4 class="font-bold text-lg">${product.nombre}</h4>
+          <p class="text-sm text-gray-300">Código: ${product.codigo} | Cantidad: ${product.cantidad}</p>
+        </div>
+      `).join('');
+    }
+
+    // Guardar datos temporalmente en el navegador (mock db)
+    function saveProductLocally(product) {
+      product.id = Date.now().toString(); // ID temporal
+      allProducts.push(product);
+      localStorage.setItem('bomberos_inventory', JSON.stringify(allProducts));
+      updateLocationCounts();
+      renderProductsList();
+    }
+
+    initApp();
+  </script>
+</body>
+</html>
